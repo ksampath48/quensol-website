@@ -11,12 +11,13 @@ import {
   Minus,
   Plus,
   Info,
+  MessageSquare,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProduct, submitEnquiry, type ApiProduct } from "@/lib/api";
+import { fetchProduct, type ApiProduct } from "@/lib/api";
 import { productImages } from "@/lib/data";
 
 export default function ProductDetails() {
@@ -24,8 +25,6 @@ export default function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("M");
   const [selectedType, setSelectedType] = useState("Box (100 ct)");
-  const [quoteSubmitted, setQuoteSubmitted] = useState(false);
-  const [quoteSubmitting, setQuoteSubmitting] = useState(false);
 
   const { data: product, isLoading } = useQuery<ApiProduct>({
     queryKey: [`/api/products/${params?.id}`],
@@ -33,29 +32,19 @@ export default function ProductDetails() {
     enabled: !!params?.id,
   });
 
-  const handleQuoteRequest = async () => {
+  const openQuoteForm = () => {
     if (!product) return;
-    setQuoteSubmitting(true);
-    try {
-      await submitEnquiry({
-        firstName: "",
-        company: "–",
-        email: "pending@quensol.com",
-        phone: "pending",
-        product: product.name,
-        quantity,
-        message: `Size: ${selectedSize}, Packaging: ${selectedType}`,
-      });
-      setQuoteSubmitted(true);
-    } finally {
-      setQuoteSubmitting(false);
-    }
+    window.dispatchEvent(
+      new CustomEvent("open-quote-form", {
+        detail: { product: product.name },
+      })
+    );
   };
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -72,6 +61,7 @@ export default function ProductDetails() {
   }
 
   const image = productImages[product.id];
+  const totalPrice = (product.price * quantity).toLocaleString("en-IN");
 
   return (
     <div className="min-h-screen bg-background">
@@ -80,11 +70,11 @@ export default function ProductDetails() {
       <main className="pt-24 pb-20">
         {/* Breadcrumb */}
         <div className="container mx-auto px-4 mb-8">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground flex-wrap">
             <a href="/" className="hover:text-primary">Home</a>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4 shrink-0" />
             <a href="/#products" className="hover:text-primary">Products</a>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4 shrink-0" />
             <span className="text-foreground font-medium">{product.name}</span>
           </div>
         </div>
@@ -100,11 +90,7 @@ export default function ProductDetails() {
               >
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 to-transparent pointer-events-none" />
                 {image && (
-                  <img
-                    src={image}
-                    alt={product.name}
-                    className="w-full h-full object-contain drop-shadow-2xl z-10"
-                  />
+                  <img src={image} alt={product.name} className="w-full h-full object-contain drop-shadow-2xl z-10" />
                 )}
                 {product.badge && (
                   <div className="absolute top-6 left-6 bg-secondary text-secondary-foreground text-sm font-bold px-3 py-1.5 rounded-lg uppercase tracking-wide z-20">
@@ -113,7 +99,7 @@ export default function ProductDetails() {
                 )}
               </motion.div>
 
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-4 gap-3">
                 {[...Array(4)].map((_, i) => (
                   <div
                     key={i}
@@ -131,29 +117,32 @@ export default function ProductDetails() {
             {/* Product Info */}
             <div>
               <div className="mb-6">
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-2 mb-2 flex-wrap">
                   <span className="text-primary font-bold tracking-wider text-xs uppercase">{product.category} Series</span>
-                  <span className="text-border">|</span>
-                  <div className="flex items-center gap-1 text-yellow-500">
-                    <Star className="w-3 h-3 fill-current" />
-                    <span className="text-xs font-bold text-foreground">4.9</span>
-                    <span className="text-xs text-muted-foreground">(1,204 Reviews)</span>
+                  <span className="text-muted-foreground">|</span>
+                  <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    ))}
+                    <span className="text-xs font-bold ml-1">4.9</span>
+                    <span className="text-xs text-muted-foreground">(1,204 reviews)</span>
                   </div>
                 </div>
 
-                <h1 className="text-4xl font-heading font-bold text-foreground mb-4">{product.name}</h1>
-                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                <h1 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-4">{product.name}</h1>
+                <p className="text-base text-muted-foreground leading-relaxed mb-6">
                   {product.description} Engineered for superior protection and tactile sensitivity. Meets ASTM D6319 standards for medical examination gloves.
                 </p>
 
                 <div className="flex items-baseline gap-2 mb-8">
                   <span className="text-3xl font-bold text-foreground">₹{product.price.toLocaleString("en-IN")}</span>
                   <span className="text-muted-foreground">/ box</span>
+                  <span className="text-xs text-muted-foreground ml-2">(100 gloves)</span>
                 </div>
               </div>
 
-              <div className="space-y-8">
-                {/* Size Selection */}
+              <div className="space-y-6">
+                {/* Size */}
                 <div>
                   <div className="flex justify-between items-center mb-3">
                     <label className="font-bold text-sm">Select Size</label>
@@ -161,13 +150,13 @@ export default function ProductDetails() {
                       <Info className="w-3 h-3" /> Size Guide
                     </button>
                   </div>
-                  <div className="grid grid-cols-5 gap-3">
+                  <div className="grid grid-cols-5 gap-2">
                     {["XS", "S", "M", "L", "XL"].map((size) => (
                       <button
                         key={size}
                         onClick={() => setSelectedSize(size)}
                         className={cn(
-                          "h-12 rounded-lg font-bold text-sm transition-all border-2",
+                          "h-11 rounded-lg font-bold text-sm transition-all border-2",
                           selectedSize === size
                             ? "border-primary bg-primary/5 text-primary"
                             : "border-border hover:border-primary/50 text-muted-foreground"
@@ -182,7 +171,7 @@ export default function ProductDetails() {
                 {/* Packaging */}
                 <div>
                   <label className="font-bold text-sm block mb-3">Packaging</label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3">
                     {[
                       { label: "Single Box", sub: "100 Gloves / Box", key: "Box (100 ct)" },
                       { label: "Bulk Case", sub: "10 Boxes / Case", key: "Case (1000 ct)", save: "SAVE 15%" },
@@ -192,16 +181,18 @@ export default function ProductDetails() {
                         onClick={() => setSelectedType(key)}
                         className={cn(
                           "p-4 rounded-xl border-2 cursor-pointer transition-all relative",
-                          selectedType === key ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
+                          selectedType === key
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-primary/50"
                         )}
                       >
                         {save && (
-                          <div className="absolute -top-3 right-4 bg-green-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                          <div className="absolute -top-3 right-3 bg-green-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
                             {save}
                           </div>
                         )}
                         <div className="flex justify-between items-center mb-1">
-                          <span className="font-bold">{label}</span>
+                          <span className="font-bold text-sm">{label}</span>
                           {selectedType === key && <Check className="w-4 h-4 text-primary" />}
                         </div>
                         <p className="text-xs text-muted-foreground">{sub}</p>
@@ -210,40 +201,41 @@ export default function ProductDetails() {
                   </div>
                 </div>
 
-                {/* Add to Quote */}
-                <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-border">
-                  <div className="flex items-center border border-border rounded-full h-14 w-full sm:w-40 px-4">
-                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-primary">
+                {/* Quantity + CTA */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-border">
+                  <div className="flex items-center border border-border rounded-full h-12 w-full sm:w-36 px-3 shrink-0">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="w-9 h-9 flex items-center justify-center text-muted-foreground hover:text-primary"
+                    >
                       <Minus className="w-4 h-4" />
                     </button>
                     <div className="flex-1 text-center font-bold text-lg">{quantity}</div>
-                    <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-primary">
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="w-9 h-9 flex items-center justify-center text-muted-foreground hover:text-primary"
+                    >
                       <Plus className="w-4 h-4" />
                     </button>
                   </div>
 
-                  {quoteSubmitted ? (
-                    <div className="flex-1 h-14 rounded-full bg-green-50 border-2 border-green-500 text-green-700 font-bold flex items-center justify-center gap-2">
-                      <Check className="w-5 h-5" /> Quote Requested!
-                    </div>
-                  ) : (
-                    <Button
-                      className="flex-1 h-14 rounded-full text-lg font-bold shadow-xl shadow-primary/20"
-                      onClick={handleQuoteRequest}
-                      disabled={quoteSubmitting}
-                    >
-                      {quoteSubmitting ? "Sending..." : `Request Quote — ₹${(product.price * quantity).toLocaleString("en-IN")}`}
-                    </Button>
-                  )}
+                  <Button
+                    className="flex-1 h-12 rounded-full font-bold shadow-xl shadow-primary/20 flex items-center justify-center gap-2"
+                    onClick={openQuoteForm}
+                    data-testid="btn-request-quote"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    Request Quote — ₹{totalPrice}
+                  </Button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-green-600" />
+                <div className="grid grid-cols-2 gap-3 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-2 bg-muted/30 rounded-lg p-3">
+                    <Shield className="w-4 h-4 text-green-600 shrink-0" />
                     <span>Medical Grade Certified</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Truck className="w-4 h-4 text-blue-600" />
+                  <div className="flex items-center gap-2 bg-muted/30 rounded-lg p-3">
+                    <Truck className="w-4 h-4 text-blue-600 shrink-0" />
                     <span>Pan-India Delivery</span>
                   </div>
                 </div>
@@ -252,36 +244,21 @@ export default function ProductDetails() {
           </div>
 
           {/* Specs */}
-          <div className="mt-24 border-t border-border pt-16">
+          <div className="mt-20 border-t border-border pt-16">
             <h2 className="text-2xl font-heading font-bold mb-8">Technical Specifications</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 {
                   title: "Material Standards",
-                  rows: [
-                    ["Material", product.category],
-                    ["Sterility", "Non-Sterile"],
-                    ["Powder Content", "Powder-Free"],
-                    ["Color", "Blue"],
-                  ],
+                  rows: [["Material", product.category], ["Sterility", "Non-Sterile"], ["Powder Content", "Powder-Free"], ["Color", "Blue"]],
                 },
                 {
                   title: "Dimensions (Size M)",
-                  rows: [
-                    ["Length", "min. 240mm"],
-                    ["Palm Width", "95 ± 10mm"],
-                    ["Fingertip Thickness", "0.10mm"],
-                    ["Palm Thickness", "0.07mm"],
-                  ],
+                  rows: [["Length", "min. 240mm"], ["Palm Width", "95 ± 10mm"], ["Fingertip Thickness", "0.10mm"], ["Palm Thickness", "0.07mm"]],
                 },
                 {
                   title: "Performance",
-                  rows: [
-                    ["Tensile Strength", "18 MPa"],
-                    ["Elongation", "500%"],
-                    ["AQL", "1.5"],
-                    ["Shelf Life", "3 Years"],
-                  ],
+                  rows: [["Tensile Strength", "18 MPa"], ["Elongation", "500%"], ["AQL", "1.5"], ["Shelf Life", "3 Years"]],
                 },
               ].map(({ title, rows }) => (
                 <div key={title} className="bg-muted/20 p-6 rounded-xl">

@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertEnquirySchema, products } from "@shared/schema";
 import { ZodError } from "zod";
+import { sendEnquiryNotification } from "./mailer";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // ── Products ──────────────────────────────────────────────────────────
@@ -27,12 +28,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         quantity: req.body.quantity ? Number(req.body.quantity) : 1,
       });
       const enquiry = await storage.createEnquiry(data);
+
+      // Fire-and-forget email — never block the response
+      sendEnquiryNotification(enquiry).catch((err) =>
+        console.error("[mailer] Failed to send email:", err.message)
+      );
+
       res.status(201).json({ success: true, enquiry });
     } catch (err) {
       if (err instanceof ZodError) {
         res.status(400).json({ message: "Validation error", errors: err.errors });
         return;
       }
+      console.error("[enquiry] Error:", err);
       res.status(500).json({ message: "Internal server error" });
     }
   });
