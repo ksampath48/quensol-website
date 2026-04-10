@@ -6,9 +6,9 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                M
+                Q
               </div>
-              <span className="font-heading font-bold text-xl">MediGlove</span>
+              <span className="font-heading font-bold text-xl">Quensol</span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed">
               The trusted partner for healthcare professionals worldwide. Ensuring safety, one pair at a time.
@@ -46,7 +46,7 @@ export function Footer() {
         </div>
         
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
-          <p>&copy; 2024 MediGlove Direct. All rights reserved.</p>
+          <p>&copy; 2024 Quensol. All rights reserved.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>

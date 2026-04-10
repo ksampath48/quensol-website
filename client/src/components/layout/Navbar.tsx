@@ -27,11 +27,11 @@ export function Navbar() {
         <Link href="/">
           <a className="flex items-center gap-2 group cursor-pointer">
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl group-hover:scale-105 transition-transform">
-              M
+              Q
             </div>
             <div className="flex flex-col">
               <span className="font-heading font-bold text-xl leading-none text-primary">
-                MediGlove
+                Quensol
               </span>
               <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">
                 Direct
