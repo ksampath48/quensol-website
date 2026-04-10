@@ -1,0 +1,20 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "7ghOpAU7qOa7Vz3fk-MKS"
+uri = "file://attached_assets/generated_images/quensol_nitrile.png"
+type = "image"
+title = "Quensol Nitrile Gloves Box"
+
+[[generated]]
+id = "anQ-PH6x0FR_igbk_iMsy"
+uri = "file://attached_assets/generated_images/quensol_latex.png"
+type = "image"
+title = "Quensol Latex Gloves Box"
+
+[[generated]]
+id = "eZYcH_Od7oAf4MciMgyeT"
+uri = "file://attached_assets/generated_images/quensol_safety.png"
+type = "image"
+title = "Quensol Safety Gloves Box"

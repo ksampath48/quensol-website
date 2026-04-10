@@ -1,0 +1,85 @@
+Continue building my existing website project without changing the current homepage UI design.
+
+Make the following improvements and ensure the website works end-to-end like a professional production-ready site:
+
+1. Branding Updates:
+- Replace all occurrences of the brand name with "Quensol"
+- Update product images (especially glove boxes) to display "Quensol" branding realistically (not just text overlay, make it look natural)
+
+2. Currency Update:
+- Change all prices and currency symbols from USD ($) to INR (₹)
+- Ensure formatting is consistent across all pages (₹1,000 style)
+
+3. Fix CTA Buttons:
+- Make all CTA buttons functional:
+  - "Request Bulk Quote" → should open a working contact/quote form
+  - "Shop All Products" → should navigate to Products section/page
+- Ensure smooth scrolling or proper routing works
+
+4. Add Sticky Lead Capture:
+- Add a sticky "Request Quote" button visible on all pages
+- On click, open a form modal or slide-in form
+- Fields: Name, Phone, Email, Company, Product Requirement, Quantity
+- Store submissions (use backend or local storage/mock API)
+
+5. Contact Forms:
+- Ensure all forms are fully functional
+- Add validation (required fields, email format, phone number)
+- On submit:
+  - Show success message
+  - Store data (backend or Firebase / simple API)
+
+6. Homepage Sections Content:
+Add professional content for:
+- Products
+- Industries
+- About Us
+- Contact
+
+7. Contact Details:
+- Add business phone number everywhere relevant:
+  +91 7386101845
+
+8. Products Section:
+- Add realistic product listings:
+  - Nitrile Gloves
+  - Latex Gloves
+  - Safety Gloves
+- Include:
+  - Product image
+  - Description
+  - Pricing in INR
+  - "Request Quote" button per product
+
+9. Industries Section:
+- Add industries like:
+  - Healthcare
+  - Pharmaceuticals
+  - Food Processing
+  - Industrial Safety
+- Include short descriptions
+
+10. About Us Section:
+- Write a professional company description for Quensol
+- Focus on quality, reliability, and supply capability
+
+11. Navigation:
+- Ensure navbar links scroll or route properly to sections
+- No broken links
+
+12. Backend Functionality:
+- Implement simple backend (Node.js/Express or serverless)
+- Handle form submissions (store in JSON or database)
+- Ensure all forms are connected to backend
+
+13. Performance & UX:
+- Ensure fast loading
+- Add loading states for forms/buttons
+- Ensure mobile responsiveness is intact
+
+14. Important Constraint:
+- DO NOT change existing homepage design/UI layout
+- Only fix functionality and add missing content
+
+Final Goal:
+The website should be fully functional, professional, and ready for real users to browse products and submit enquiries.

@@ -51,11 +51,11 @@ export function ProductCard({ product }: ProductCardProps) {
       <div className="mt-auto flex items-center justify-between">
         <div className="flex flex-col">
           <span className="text-xs text-muted-foreground">Starting at</span>
-          <span className="font-bold text-xl text-primary">${product.price}</span>
+          <span className="font-bold text-xl text-primary">₹{product.price.toLocaleString("en-IN")}</span>
         </div>
         <Link href={`/product/${product.id}`}>
           <Button size="sm" className="rounded-full px-4 shadow-lg shadow-primary/10 hover:shadow-primary/30">
-            Select Options
+            Request Quote
           </Button>
         </Link>
       </div>

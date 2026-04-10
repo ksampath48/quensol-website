@@ -3,6 +3,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { StickyQuoteForm } from "@/components/layout/StickyQuoteForm";
 import Home from "@/pages/Home";
 import ProductDetails from "@/pages/ProductDetails";
 import NotFound from "@/pages/not-found";
@@ -23,6 +24,7 @@ function App() {
       <TooltipProvider>
         <Toaster />
         <Router />
+        <StickyQuoteForm />
       </TooltipProvider>
     </QueryClientProvider>
   );

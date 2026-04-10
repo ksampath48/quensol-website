@@ -102,7 +102,7 @@ export default function ProductDetails() {
                 </p>
                 
                 <div className="flex items-baseline gap-2 mb-8">
-                  <span className="text-3xl font-bold text-foreground">${product.price}</span>
+                  <span className="text-3xl font-bold text-foreground">₹{product.price.toLocaleString("en-IN")}</span>
                   <span className="text-muted-foreground">/ box</span>
                 </div>
               </div>
@@ -193,7 +193,7 @@ export default function ProductDetails() {
                     </button>
                   </div>
                   <Button className="flex-1 h-14 rounded-full text-lg font-bold shadow-xl shadow-primary/20">
-                    Add to Cart - ${(product.price * quantity).toFixed(2)}
+                    Request Quote - ₹{(product.price * quantity).toLocaleString("en-IN")}
                   </Button>
                 </div>
                 

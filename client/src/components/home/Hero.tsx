@@ -38,12 +38,16 @@ export function Hero() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="h-14 px-8 text-base rounded-full shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all hover:-translate-y-1">
-                Shop All Products
-              </Button>
-              <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-full bg-white/50 backdrop-blur-sm border-primary/20 hover:bg-white">
-                Request Bulk Quote <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
+              <a href="#products">
+                <Button size="lg" className="w-full sm:w-auto h-14 px-8 text-base rounded-full shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all hover:-translate-y-1">
+                  Shop All Products
+                </Button>
+              </a>
+              <a href="#contact">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 text-base rounded-full bg-white/50 backdrop-blur-sm border-primary/20 hover:bg-white">
+                  Request Bulk Quote <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </a>
             </div>
 
             <div className="mt-12 flex items-center gap-8 opacity-80 grayscale hover:grayscale-0 transition-all duration-500">

@@ -38,9 +38,9 @@ export function Footer() {
           <div>
             <h4 className="font-bold mb-6">Contact</h4>
             <ul className="space-y-3 text-sm text-slate-400">
-              <li>support@mediglove.direct</li>
-              <li>1-800-GLOVES</li>
-              <li>123 Medical Plaza, Suite 100<br/>Boston, MA 02115</li>
+              <li>support@quensol.com</li>
+              <li>+91 7386101845</li>
+              <li>Industrial Estate<br/>Hyderabad, India</li>
             </ul>
           </div>
         </div>

@@ -42,17 +42,17 @@ export function Navbar() {
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#products" className="text-sm font-medium hover:text-primary transition-colors">Products</a>
-          <a href="#industries" className="text-sm font-medium hover:text-primary transition-colors">Industries</a>
-          <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">About Us</a>
-          <a href="#contact" className="text-sm font-medium hover:text-primary transition-colors">Contact</a>
+          <a href="/#products" className="text-sm font-medium hover:text-primary transition-colors">Products</a>
+          <a href="/#industries" className="text-sm font-medium hover:text-primary transition-colors">Industries</a>
+          <a href="/#about" className="text-sm font-medium hover:text-primary transition-colors">About Us</a>
+          <a href="/#contact" className="text-sm font-medium hover:text-primary transition-colors">Contact</a>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-4">
           <div className="hidden md:flex items-center gap-2 text-sm font-medium text-muted-foreground mr-4">
             <Phone className="w-4 h-4" />
-            <span>1-800-GLOVES</span>
+            <span>+91 7386101845</span>
           </div>
           
           <Button variant="ghost" size="icon" className="rounded-full">
