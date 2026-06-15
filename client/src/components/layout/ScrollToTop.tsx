@@ -30,15 +30,20 @@ export function ScrollToTop() {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
+  // Sits above the dual CTA bar (3.5rem = 56px) + 12px gap = ~4.25rem
+  // When comparison bar also open, shifts up another 3.5rem
+  const bottomClass = barOpen
+    ? "bottom-[7.75rem] md:bottom-[4.25rem]"
+    : "bottom-[4.25rem]";
+
   return (
     <button
       onClick={scrollToTop}
       data-testid="btn-scroll-to-top"
       aria-label="Scroll to top"
       className={cn(
-        "fixed right-6 z-40 w-12 h-12 flex items-center justify-center transition-all duration-300",
-        // Shift up when comparison bar is open on mobile
-        barOpen ? "bottom-[5.5rem] md:bottom-24" : "bottom-24",
+        "fixed right-4 z-40 w-11 h-11 flex items-center justify-center transition-all duration-300",
+        bottomClass,
         visible
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 translate-y-4 pointer-events-none"
