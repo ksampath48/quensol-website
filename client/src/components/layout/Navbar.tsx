@@ -1,13 +1,11 @@
 import { Phone, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
-import { useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [, navigate] = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -32,11 +30,8 @@ export function Navbar() {
       )}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
-        {/* Logo */}
-        <button
-          onClick={() => navigate("/")}
-          className="flex items-center gap-2 group cursor-pointer"
-        >
+        {/* Logo — plain <a> so it always navigates */}
+        <a href="/" className="flex items-center gap-2 group cursor-pointer">
           <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl group-hover:scale-105 transition-transform">
             Q
           </div>
@@ -44,7 +39,7 @@ export function Navbar() {
             <span className="font-heading font-bold text-xl leading-none text-primary">Quensol</span>
             <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">Direct</span>
           </div>
-        </button>
+        </a>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
