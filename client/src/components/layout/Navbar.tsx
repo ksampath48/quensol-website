@@ -16,10 +16,11 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
-    { label: "Products", href: "/#products" },
-    { label: "Industries", href: "/#industries" },
-    { label: "About Us", href: "/#about" },
-    { label: "Contact", href: "/#contact" },
+    { label: "Products", href: "/catalog" },
+    { label: "Blog", href: "/blog" },
+    { label: "Locations", href: "/locations" },
+    { label: "Samples", href: "/samples" },
+    { label: "About", href: "/#about" },
   ];
 
   return (
