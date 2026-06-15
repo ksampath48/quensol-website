@@ -18,6 +18,8 @@ import Locations from "@/pages/Locations";
 import SampleRequest from "@/pages/SampleRequest";
 import StandingOrder from "@/pages/StandingOrder";
 import Distributor from "@/pages/Distributor";
+import Videos from "@/pages/Videos";
+import HospitalProcurement from "@/pages/HospitalProcurement";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -34,6 +36,8 @@ function Router() {
       <Route path="/samples" component={SampleRequest} />
       <Route path="/standing-order" component={StandingOrder} />
       <Route path="/distributors" component={Distributor} />
+      <Route path="/videos" component={Videos} />
+      <Route path="/hospital-procurement" component={HospitalProcurement} />
       <Route path="/privacy">{() => <Legal page="privacy" />}</Route>
       <Route path="/terms">{() => <Legal page="terms" />}</Route>
       <Route path="/shipping">{() => <Legal page="shipping" />}</Route>
