@@ -43,6 +43,8 @@ export function Footer() {
               <li><a href="/catalog?cat=Latex" className="hover:text-primary transition-colors">Latex Gloves</a></li>
               <li><a href="/catalog?cat=Surgical" className="hover:text-primary transition-colors">Surgical Sterile</a></li>
               <li><a href="/samples" className="hover:text-primary transition-colors">Free Samples</a></li>
+              <li><a href="/standing-order" className="hover:text-primary transition-colors">Standing Orders</a></li>
+              <li><a href="/distributors" className="hover:text-primary transition-colors">Become a Partner</a></li>
               <li><a href="/locations" className="hover:text-primary transition-colors">Cities We Serve</a></li>
             </ul>
           </div>
@@ -53,8 +55,9 @@ export function Footer() {
             <ul className="space-y-3 text-sm text-slate-400">
               <li><a href="/blog" className="hover:text-primary transition-colors">Buying Guides</a></li>
               <li><a href="/blog/nitrile-vs-latex-gloves" className="hover:text-primary transition-colors">Nitrile vs Latex</a></li>
-              <li><a href="/blog/aql-ratings-medical-gloves" className="hover:text-primary transition-colors">Understanding AQL</a></li>
+              <li><a href="/blog/hospital-infection-control-gloves" className="hover:text-primary transition-colors">Infection Control</a></li>
               <li><a href="/blog/bulk-glove-procurement-guide" className="hover:text-primary transition-colors">Procurement Guide</a></li>
+              <li><a href="/blog/standing-order-supply-management" className="hover:text-primary transition-colors">Standing Orders Guide</a></li>
               <li><a href="/#faq" className="hover:text-primary transition-colors">FAQs</a></li>
               <li><a href="/shipping" className="hover:text-primary transition-colors">Shipping Policy</a></li>
             </ul>
