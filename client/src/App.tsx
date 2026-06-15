@@ -4,7 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { StickyQuoteForm } from "@/components/layout/StickyQuoteForm";
-import { WhatsAppWidget } from "@/components/layout/WhatsAppWidget";
+import { DualCTABar } from "@/components/layout/DualCTABar";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import Home from "@/pages/Home";
 import Catalog from "@/pages/Catalog";
@@ -45,7 +45,7 @@ function App() {
         <Toaster />
         <Router />
         <StickyQuoteForm />
-        <WhatsAppWidget />
+        <DualCTABar />
         <ScrollToTop />
       </TooltipProvider>
     </QueryClientProvider>
