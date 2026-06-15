@@ -26,7 +26,9 @@ const STATUS_CONFIG = {
 };
 
 async function fetchEnquiries(): Promise<Enquiry[]> {
-  const r = await fetch("/api/enquiries");
+  const r = await fetch("/api/enquiries", {
+    headers: { "x-admin-key": PASSWORD },
+  });
   if (!r.ok) throw new Error("Failed to load enquiries");
   return r.json();
 }
@@ -34,7 +36,7 @@ async function fetchEnquiries(): Promise<Enquiry[]> {
 async function updateStatus(id: string, status: string) {
   const r = await fetch(`/api/enquiries/${id}/status`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "x-admin-key": PASSWORD },
     body: JSON.stringify({ status }),
   });
   if (!r.ok) throw new Error("Failed to update status");
