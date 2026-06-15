@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { StickyQuoteForm } from "@/components/layout/StickyQuoteForm";
 import { WhatsAppWidget } from "@/components/layout/WhatsAppWidget";
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
 import Home from "@/pages/Home";
 import Catalog from "@/pages/Catalog";
 import ProductDetails from "@/pages/ProductDetails";
@@ -45,6 +46,7 @@ function App() {
         <Router />
         <StickyQuoteForm />
         <WhatsAppWidget />
+        <ScrollToTop />
       </TooltipProvider>
     </QueryClientProvider>
   );
