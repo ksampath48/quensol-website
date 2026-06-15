@@ -28,6 +28,13 @@ export function StickyQuoteForm({ initialProduct }: StickyQuoteFormProps = {}) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [barOpen, setBarOpen] = useState(false);
+
+  useEffect(() => {
+    const onBar = (e: Event) => setBarOpen((e as CustomEvent).detail.open);
+    window.addEventListener("comparison-bar", onBar);
+    return () => window.removeEventListener("comparison-bar", onBar);
+  }, []);
 
   const emptyForm = (): EnquiryPayload => ({
     firstName: "",
@@ -99,7 +106,7 @@ export function StickyQuoteForm({ initialProduct }: StickyQuoteFormProps = {}) {
         id="sticky-quote-btn"
         data-testid="btn-sticky-quote"
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-40 bg-primary text-white px-5 py-3 rounded-full shadow-2xl hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2 font-bold text-sm"
+        className={`fixed right-6 z-40 bg-primary text-white px-5 py-3 rounded-full shadow-2xl hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2 font-bold text-sm ${barOpen ? "bottom-[4.5rem] md:bottom-6" : "bottom-6"}`}
       >
         <MessageSquare className="w-5 h-5" />
         Request Quote
