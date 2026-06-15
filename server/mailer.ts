@@ -7,6 +7,16 @@ const SMTP_USER = process.env.SMTP_USER || "";
 const SMTP_PASS = process.env.SMTP_PASS || "";
 const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || SMTP_USER;
 
+function escHtml(str: string | null | undefined): string {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 let transporter: nodemailer.Transporter | null = null;
 
 function getTransporter() {
@@ -46,16 +56,16 @@ Enquiry ID: ${enquiry.id}
   const html = `
     <h2 style="color:#0084a8">New Quote Request — Quensol</h2>
     <table style="border-collapse:collapse;width:100%;font-family:sans-serif;font-size:14px">
-      <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Name</td><td style="padding:8px">${enquiry.firstName} ${enquiry.lastName || ""}</td></tr>
-      <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Company</td><td style="padding:8px">${enquiry.company}</td></tr>
-      <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Email</td><td style="padding:8px">${enquiry.email}</td></tr>
-      <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Phone</td><td style="padding:8px">${enquiry.phone}</td></tr>
-      <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Product</td><td style="padding:8px">${enquiry.product}</td></tr>
+      <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Name</td><td style="padding:8px">${escHtml(enquiry.firstName)} ${escHtml(enquiry.lastName)}</td></tr>
+      <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Company</td><td style="padding:8px">${escHtml(enquiry.company)}</td></tr>
+      <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Email</td><td style="padding:8px">${escHtml(enquiry.email)}</td></tr>
+      <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Phone</td><td style="padding:8px">${escHtml(enquiry.phone)}</td></tr>
+      <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Product</td><td style="padding:8px">${escHtml(enquiry.product)}</td></tr>
       <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Quantity</td><td style="padding:8px">${enquiry.quantity ?? "Not specified"} boxes</td></tr>
-      <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Message</td><td style="padding:8px">${enquiry.message || "–"}</td></tr>
+      <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Message</td><td style="padding:8px">${escHtml(enquiry.message) || "–"}</td></tr>
       <tr><td style="padding:8px;font-weight:bold;background:#f0f9fb">Submitted</td><td style="padding:8px">${new Date(enquiry.createdAt).toLocaleString("en-IN")}</td></tr>
     </table>
-    <p style="color:#666;font-size:12px;margin-top:16px">Enquiry ID: ${enquiry.id}</p>
+    <p style="color:#666;font-size:12px;margin-top:16px">Enquiry ID: ${escHtml(enquiry.id)}</p>
   `;
 
   await transport.sendMail({
