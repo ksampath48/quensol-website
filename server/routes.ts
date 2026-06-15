@@ -6,6 +6,7 @@ import { insertEnquirySchema, products } from "@shared/schema";
 import { ZodError } from "zod";
 import { sendEnquiryNotification } from "./mailer";
 import { enquiryLimiter, apiLimiter } from "./middleware/rateLimit";
+import { adminAuth } from "./middleware/adminAuth";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Apply general rate limit to all API routes
@@ -50,12 +51,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/enquiries", async (_req: Request, res: Response) => {
+  app.get("/api/enquiries", adminAuth, async (_req: Request, res: Response) => {
     const enquiries = await storage.getEnquiries();
     res.json(enquiries);
   });
 
-  app.get("/api/enquiries/:id", async (req: Request, res: Response) => {
+  app.get("/api/enquiries/:id", adminAuth, async (req: Request, res: Response) => {
     const enquiry = await storage.getEnquiry(req.params.id);
     if (!enquiry) {
       res.status(404).json({ message: "Enquiry not found" });
@@ -64,7 +65,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(enquiry);
   });
 
-  app.patch("/api/enquiries/:id/status", async (req: Request, res: Response) => {
+  app.patch("/api/enquiries/:id/status", adminAuth, async (req: Request, res: Response) => {
     const { status } = req.body;
     if (!["new", "contacted", "closed"].includes(status)) {
       res.status(400).json({ message: "Invalid status" });
