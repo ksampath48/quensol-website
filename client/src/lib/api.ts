@@ -1,3 +1,5 @@
+import { products as staticProducts } from "@shared/schema";
+
 export interface EnquiryPayload {
   firstName: string;
   lastName?: string;
@@ -27,15 +29,27 @@ export interface ApiProduct {
 const BASE = "/api";
 
 export async function fetchProducts(): Promise<ApiProduct[]> {
-  const res = await fetch(`${BASE}/products`);
-  if (!res.ok) throw new Error("Failed to fetch products");
-  return res.json();
+  try {
+    const res = await fetch(`${BASE}/products`);
+    if (!res.ok) return staticProducts;
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) return staticProducts;
+    return data;
+  } catch {
+    return staticProducts;
+  }
 }
 
 export async function fetchProduct(id: string): Promise<ApiProduct> {
-  const res = await fetch(`${BASE}/products/${id}`);
-  if (!res.ok) throw new Error("Product not found");
-  return res.json();
+  try {
+    const res = await fetch(`${BASE}/products/${id}`);
+    if (!res.ok) throw new Error("Product not found");
+    return res.json();
+  } catch {
+    const found = staticProducts.find((p) => p.id === id);
+    if (found) return found;
+    throw new Error("Product not found");
+  }
 }
 
 export async function submitEnquiry(data: EnquiryPayload): Promise<{ success: boolean; enquiry: Enquiry }> {
@@ -45,8 +59,8 @@ export async function submitEnquiry(data: EnquiryPayload): Promise<{ success: bo
     body: JSON.stringify(data),
   });
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message || "Failed to submit enquiry");
+    const err = await res.json().catch(() => ({}));
+    throw new Error((err as any).message || "Failed to submit enquiry");
   }
   return res.json();
 }
