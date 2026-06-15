@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/home/Hero";
 import { Features } from "@/components/home/Features";
+import { ClientLogoWall } from "@/components/home/ClientLogoWall";
 import { Testimonials } from "@/components/home/Testimonials";
 import { FAQ } from "@/components/home/FAQ";
 import { Footer } from "@/components/layout/Footer";
@@ -37,6 +38,7 @@ export default function Home() {
       <main>
         <Hero />
         <Features />
+        <ClientLogoWall />
 
         {/* About */}
         <section id="about" className="py-24 bg-white">
