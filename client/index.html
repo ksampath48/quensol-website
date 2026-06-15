@@ -127,38 +127,167 @@
     }
     </script>
 
-    <!-- Structured Data: FAQPage -->
+    <!-- Structured Data: WebSite + SiteLinksSearchBox (GEO: site structure signal for AI engines) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Quensol",
+      "url": "https://quensol.com",
+      "description": "India's trusted B2B medical gloves supplier — ISO-certified Nitrile, Latex, Vinyl, Surgical and Safety gloves at bulk prices, delivered pan-India.",
+      "inLanguage": "en-IN",
+      "publisher": { "@type": "Organization", "name": "Quensol" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": { "@type": "EntryPoint", "urlTemplate": "https://quensol.com/catalog?q={search_term_string}" },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Structured Data: FAQPage (AEO: featured snippets + AI direct answers) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["h1", "h2", ".faq-answer"]
+      },
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What is the minimum order quantity for bulk gloves?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Our minimum order is 10 boxes (1,000 gloves) for standard delivery. Orders above 100 boxes qualify for bulk pricing and priority dispatch within 24 hours." }
+          "name": "What is the minimum order quantity for bulk medical gloves in India?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Quensol's minimum order is 10 boxes (1,000 gloves) for standard delivery. Orders above 100 boxes qualify for bulk pricing starting at 8% discount, with priority dispatch within 24 hours." }
         },
         {
           "@type": "Question",
           "name": "Are Quensol gloves CE and FDA certified?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes. All our medical-grade gloves carry CE marking (EN 455 standard), are FDA Listed, and are manufactured to ISO 9001:2015 quality standards. Certificates of Conformance are available on request." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. All Quensol medical-grade gloves carry CE marking (EN 455 standard), are FDA Listed, and are manufactured to ISO 9001:2015 quality standards with AQL 1.5. Certificates of Conformance and third-party test reports are provided with every batch." }
         },
         {
           "@type": "Question",
-          "name": "Do you offer free samples before a bulk order?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes — we offer up to 3 product samples (1 box each) to qualified healthcare facilities. Submit a sample request at quensol.com/samples. Samples are dispatched within 48 hours." }
+          "name": "Does Quensol offer free glove samples before a bulk order?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes — Quensol offers up to 3 product samples (1 box each) to qualified healthcare facilities at no cost. Submit a sample request at quensol.com/samples. Samples are dispatched within 48 hours." }
         },
         {
           "@type": "Question",
-          "name": "What cities do you deliver to?",
-          "acceptedAnswer": { "@type": "Answer", "text": "We deliver pan-India. We have dedicated distribution in Hyderabad, Bangalore, Chennai, Mumbai, Delhi NCR, and Pune. Express 24-hour delivery is available in these cities for orders above 50 boxes." }
+          "name": "Which cities in India does Quensol deliver medical gloves to?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Quensol delivers pan-India to 12+ major cities including Hyderabad (same-day), Bangalore, Chennai, Mumbai, Delhi NCR, Pune, Kolkata, Ahmedabad, Coimbatore, Visakhapatnam, Kochi, and Jaipur. Express next-day delivery is available for orders above 50 boxes in key cities." }
         },
         {
           "@type": "Question",
-          "name": "Can I set up a monthly recurring supply arrangement?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our Standing Order programme offers automatic monthly dispatch at locked-in pricing, with a 5–12% discount versus spot orders. Visit quensol.com/standing-order to apply." }
+          "name": "Can hospitals set up a monthly recurring glove supply arrangement?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Quensol's Standing Order programme offers automatic monthly dispatch at locked-in pricing with 5–12% discount versus spot orders, priority stock allocation, and a dedicated account manager. Visit quensol.com/standing-order to apply." }
+        },
+        {
+          "@type": "Question",
+          "name": "What types of medical gloves does Quensol supply?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Quensol supplies six categories: Nitrile Exam Gloves (AQL 1.5), Neoprene Surgical Sterile, Heavy Duty Safety Gloves, Vinyl Gloves, Aloe Vera Latex, and Latex Surgical Sterile. All medical-grade products are CE marked, ISO 9001 certified, and ASTM D6319 tested." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between nitrile and latex medical gloves?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Nitrile gloves are synthetic, latex-free, and allergy-safe — recommended for most clinical uses. Latex gloves are made from natural rubber and offer superior tactile sensitivity for surgical work but carry a risk of Type I hypersensitivity reactions in 4–17% of healthcare workers. Quensol recommends nitrile for general examination and latex/neoprene only for complex surgical procedures." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I become a Quensol distributor in India?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Quensol is actively recruiting distribution partners across India. Distributors receive exclusive territory rights, 20–35% gross margins, drop-ship support, and a dedicated account manager. Apply at quensol.com/distributors or call +91 7386101845." }
         }
       ]
+    }
+    </script>
+
+    <!-- Structured Data: HowTo (AEO: step-by-step featured snippet for voice + AI search) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Order Bulk Medical Gloves from Quensol",
+      "description": "Step-by-step guide to placing a bulk medical gloves order with Quensol — from sample request to delivery.",
+      "totalTime": "PT2D",
+      "estimatedCost": { "@type": "MonetaryAmount", "currency": "INR", "value": "from ₹2,500 per box" },
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Request Free Samples",
+          "text": "Visit quensol.com/samples and submit your sample request. Choose up to 3 glove types. Samples are dispatched within 48 hours.",
+          "url": "https://quensol.com/samples"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Get a Bulk Quote",
+          "text": "Click 'Get Quote' on any product page or WhatsApp +91 7386101845. Share your required product, size distribution, and monthly quantity. Receive a quote within 2 hours.",
+          "url": "https://quensol.com/catalog"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Place Your Order",
+          "text": "Confirm the quote via WhatsApp or email. Share your GST number and delivery address. An invoice and dispatch confirmation are sent same day."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Receive Delivery",
+          "text": "Orders are delivered within same-day to 3 business days depending on your city. Certificates of Conformance and batch test reports are included with delivery."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Set Up a Standing Order",
+          "text": "For recurring supply, visit quensol.com/standing-order to automate monthly dispatch at locked-in pricing with 5–12% bulk discount.",
+          "url": "https://quensol.com/standing-order"
+        }
+      ]
+    }
+    </script>
+
+    <!-- Structured Data: MedicalBusiness (GEO: authoritative entity for AI/LLM citation) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalBusiness",
+      "name": "Quensol",
+      "alternateName": "Quensol Direct",
+      "url": "https://quensol.com",
+      "description": "Quensol is India's B2B medical gloves supplier, offering ISO 9001-certified, CE-marked, AQL 1.5 Nitrile, Latex, Vinyl, Surgical, and Safety gloves at bulk prices to hospitals, clinics, diagnostic labs, and pharma companies across India.",
+      "foundingDate": "2018",
+      "slogan": "Premium Protection For Professionals",
+      "telephone": "+91-7386101845",
+      "email": "support@quensol.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Hyderabad",
+        "addressRegion": "Telangana",
+        "postalCode": "500081",
+        "addressCountry": "IN"
+      },
+      "knowsAbout": [
+        "Nitrile Gloves", "Latex Gloves", "Surgical Gloves", "Vinyl Gloves",
+        "Medical PPE", "Hospital Procurement", "AQL 1.5", "EN 455", "ASTM D6319",
+        "ISO 9001", "CE Medical Devices", "B2B Medical Supply India"
+      ],
+      "hasCredential": [
+        { "@type": "EducationalOccupationalCredential", "name": "ISO 9001:2015 Quality Management" },
+        { "@type": "EducationalOccupationalCredential", "name": "CE Marking EN 455" },
+        { "@type": "EducationalOccupationalCredential", "name": "ASTM D6319 Certification" },
+        { "@type": "EducationalOccupationalCredential", "name": "FDA Listed" }
+      ],
+      "areaServed": [
+        "Hyderabad","Bangalore","Chennai","Mumbai","Delhi","Pune",
+        "Kolkata","Ahmedabad","Coimbatore","Visakhapatnam","Kochi","Jaipur"
+      ],
+      "numberOfEmployees": { "@type": "QuantitativeValue", "value": 50 },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "1204",
+        "bestRating": "5"
+      }
     }
     </script>
   </head>
