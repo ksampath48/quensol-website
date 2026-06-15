@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { StickyQuoteForm } from "@/components/layout/StickyQuoteForm";
 import { DualCTABar } from "@/components/layout/DualCTABar";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
+import { CookieConsent } from "@/components/layout/CookieConsent";
 import Home from "@/pages/Home";
 import Catalog from "@/pages/Catalog";
 import ProductDetails from "@/pages/ProductDetails";
@@ -15,6 +16,8 @@ import Blog from "@/pages/Blog";
 import BlogPost from "@/pages/BlogPost";
 import Locations from "@/pages/Locations";
 import SampleRequest from "@/pages/SampleRequest";
+import StandingOrder from "@/pages/StandingOrder";
+import Distributor from "@/pages/Distributor";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -29,6 +32,8 @@ function Router() {
       <Route path="/locations" component={Locations} />
       <Route path="/locations/:city" component={Locations} />
       <Route path="/samples" component={SampleRequest} />
+      <Route path="/standing-order" component={StandingOrder} />
+      <Route path="/distributors" component={Distributor} />
       <Route path="/privacy">{() => <Legal page="privacy" />}</Route>
       <Route path="/terms">{() => <Legal page="terms" />}</Route>
       <Route path="/shipping">{() => <Legal page="shipping" />}</Route>
@@ -47,6 +52,7 @@ function App() {
         <StickyQuoteForm />
         <DualCTABar />
         <ScrollToTop />
+        <CookieConsent />
       </TooltipProvider>
     </QueryClientProvider>
   );
