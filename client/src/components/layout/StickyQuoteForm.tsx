@@ -101,17 +101,6 @@ export function StickyQuoteForm({ initialProduct }: StickyQuoteFormProps = {}) {
 
   return (
     <>
-      {/* Floating Button */}
-      <button
-        id="sticky-quote-btn"
-        data-testid="btn-sticky-quote"
-        onClick={() => setIsOpen(true)}
-        className={`fixed right-6 z-40 bg-primary text-white px-5 py-3 rounded-full shadow-2xl hover:bg-primary/90 transition-all hover:scale-105 flex items-center gap-2 font-bold text-sm ${barOpen ? "bottom-[4.5rem] md:bottom-6" : "bottom-6"}`}
-      >
-        <MessageSquare className="w-5 h-5" />
-        Request Quote
-      </button>
-
       {/* Backdrop + Modal */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
