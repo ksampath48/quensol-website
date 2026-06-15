@@ -1,6 +1,8 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
+import { ComparisonBar } from "@/components/products/ComparisonBar";
+import { ComparisonModal } from "@/components/products/ComparisonModal";
 import { SlidersHorizontal, Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProducts, type ApiProduct } from "@/lib/api";
@@ -19,6 +21,8 @@ export default function Catalog() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [sort, setSort] = useState("price-asc");
   const [search, setSearch] = useState("");
+  const [compareList, setCompareList] = useState<ApiProduct[]>([]);
+  const [showComparison, setShowComparison] = useState(false);
 
   const { data: products = [], isLoading } = useQuery<ApiProduct[]>({
     queryKey: ["/api/products"],
@@ -40,11 +44,18 @@ export default function Catalog() {
     return list.map((p) => ({ ...p, image: productImages[p.id] }));
   }, [products, activeCategory, sort, search]);
 
+  const toggleCompare = (product: ApiProduct) => {
+    setCompareList(prev => {
+      if (prev.find(p => p.id === product.id)) return prev.filter(p => p.id !== product.id);
+      if (prev.length >= 3) return prev;
+      return [...prev, product];
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-
-      <main className="pt-24 pb-20">
+      <main className="pt-24 pb-32">
         {/* Header */}
         <div className="bg-slate-50 border-b border-border py-12">
           <div className="container mx-auto px-4">
@@ -53,51 +64,31 @@ export default function Catalog() {
                 <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-2">Full Range</p>
                 <h1 className="text-4xl font-heading font-bold text-foreground">Product Catalog</h1>
                 <p className="text-muted-foreground mt-2">
-                  {filtered.length} products available — Bulk discounts on orders above 100 boxes
+                  {filtered.length} products · Bulk discounts on orders above 100 boxes ·{" "}
+                  <a href="/samples" className="text-primary hover:underline">Request free samples →</a>
                 </p>
               </div>
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <input
-                    type="text"
-                    placeholder="Search products…"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="pl-9 pr-4 h-10 rounded-full border border-border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-56"
-                    data-testid="input-catalog-search"
-                  />
+                  <input type="text" placeholder="Search products…" value={search} onChange={(e) => setSearch(e.target.value)}
+                    className="pl-9 pr-4 h-10 rounded-full border border-border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-52"
+                    data-testid="input-catalog-search" />
                 </div>
                 <div className="flex items-center gap-2 bg-white border border-border rounded-full px-3 h-10">
                   <SlidersHorizontal className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <select
-                    value={sort}
-                    onChange={(e) => setSort(e.target.value)}
-                    className="text-sm bg-transparent focus:outline-none pr-1"
-                    data-testid="select-catalog-sort"
-                  >
-                    {SORT_OPTIONS.map((o) => (
-                      <option key={o.value} value={o.value}>{o.label}</option>
-                    ))}
+                  <select value={sort} onChange={(e) => setSort(e.target.value)}
+                    className="text-sm bg-transparent focus:outline-none pr-1" data-testid="select-catalog-sort">
+                    {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                   </select>
                 </div>
               </div>
             </div>
-
-            {/* Category Pills */}
             <div className="flex flex-wrap gap-2 mt-6">
               {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  data-testid={`btn-category-${cat.toLowerCase()}`}
-                  className={cn(
-                    "px-4 py-1.5 rounded-full text-sm font-medium transition-all border",
-                    activeCategory === cat
-                      ? "bg-primary text-white border-primary shadow-sm"
-                      : "bg-white text-muted-foreground border-border hover:border-primary hover:text-primary"
-                  )}
-                >
+                <button key={cat} onClick={() => setActiveCategory(cat)} data-testid={`btn-category-${cat.toLowerCase()}`}
+                  className={cn("px-4 py-1.5 rounded-full text-sm font-medium transition-all border",
+                    activeCategory === cat ? "bg-primary text-white border-primary shadow-sm" : "bg-white text-muted-foreground border-border hover:border-primary hover:text-primary")}>
                   {cat}
                 </button>
               ))}
@@ -105,26 +96,37 @@ export default function Catalog() {
           </div>
         </div>
 
+        {/* Compare hint */}
+        {compareList.length === 0 && (
+          <div className="container mx-auto px-4 mt-6">
+            <p className="text-sm text-muted-foreground bg-primary/5 border border-primary/20 rounded-xl px-4 py-3 inline-block">
+              💡 <strong>Tip:</strong> Check the compare box on any product to compare up to 3 glove types side-by-side.
+            </p>
+          </div>
+        )}
+
         {/* Grid */}
-        <div className="container mx-auto px-4 mt-12">
+        <div className="container mx-auto px-4 mt-8">
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-muted/30 rounded-2xl animate-pulse h-80" />
-              ))}
+              {[...Array(6)].map((_, i) => <div key={i} className="bg-muted/30 rounded-2xl animate-pulse h-80" />)}
             </div>
           ) : filtered.length === 0 ? (
             <div className="py-24 text-center">
               <p className="text-2xl font-bold mb-2">No products found</p>
               <p className="text-muted-foreground">Try a different category or search term.</p>
-              <button onClick={() => { setActiveCategory("All"); setSearch(""); }} className="mt-4 text-primary underline">
-                Clear filters
-              </button>
+              <button onClick={() => { setActiveCategory("All"); setSearch(""); }} className="mt-4 text-primary underline">Clear filters</button>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {filtered.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  compareSelected={!!compareList.find(p => p.id === product.id)}
+                  onToggleCompare={() => toggleCompare(product)}
+                  compareDisabled={compareList.length >= 3 && !compareList.find(p => p.id === product.id)}
+                />
               ))}
             </div>
           )}
@@ -135,23 +137,32 @@ export default function Catalog() {
           <div className="bg-primary/5 border border-primary/20 rounded-2xl p-8 text-center">
             <h3 className="text-2xl font-bold mb-2">Need a custom order?</h3>
             <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-              We handle bulk hospital procurement, monthly standing orders, and custom packaging. Call us or send a quote request.
+              Bulk hospital procurement, monthly standing orders, and custom packaging available.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="tel:+917386101845" className="inline-flex items-center justify-center h-11 px-6 bg-primary text-white rounded-full font-semibold text-sm hover:bg-primary/90 transition-colors">
+              <a href="tel:+917386101845"
+                className="inline-flex items-center justify-center h-11 px-6 bg-primary text-white rounded-full font-semibold text-sm hover:bg-primary/90 transition-colors">
                 📞 Call +91 7386101845
               </a>
-              <button
-                onClick={() => window.dispatchEvent(new CustomEvent("open-quote-form", { detail: {} }))}
-                className="inline-flex items-center justify-center h-11 px-6 border border-primary text-primary rounded-full font-semibold text-sm hover:bg-primary hover:text-white transition-colors"
-                data-testid="btn-bulk-quote"
-              >
-                Request Bulk Quote
-              </button>
+              <a href="/samples"
+                className="inline-flex items-center justify-center h-11 px-6 border border-primary text-primary rounded-full font-semibold text-sm hover:bg-primary hover:text-white transition-colors">
+                Request Free Samples
+              </a>
             </div>
           </div>
         </div>
       </main>
+
+      <ComparisonBar
+        selected={compareList}
+        onRemove={(id) => setCompareList(prev => prev.filter(p => p.id !== id))}
+        onClear={() => setCompareList([])}
+        onCompare={() => setShowComparison(true)}
+      />
+
+      {showComparison && (
+        <ComparisonModal products={compareList} onClose={() => setShowComparison(false)} />
+      )}
 
       <Footer />
     </div>
