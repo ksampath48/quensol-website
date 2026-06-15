@@ -1,13 +1,47 @@
+import { useState } from "react";
 import { useRoute, useLocation } from "wouter";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { blogPosts } from "@/lib/blog-data";
-import { ArrowLeft, Clock, Tag, Share2 } from "lucide-react";
+import { ArrowLeft, Clock, Tag, Share2, Check } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function BlogPost() {
   const [, params] = useRoute("/blog/:slug");
   const [, navigate] = useLocation();
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    const title = post?.title ?? "Quensol Resource";
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, url });
+        return;
+      } catch {
+        // user cancelled share — do nothing
+        return;
+      }
+    }
+
+    // Clipboard fallback
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      // execCommand fallback for HTTP/embedded contexts
+      const el = document.createElement("textarea");
+      el.value = url;
+      el.style.position = "fixed";
+      el.style.opacity = "0";
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const post = blogPosts.find(p => p.slug === params?.slug);
 
@@ -61,10 +95,11 @@ export default function BlogPost() {
                 </div>
               </div>
               <button
-                onClick={() => navigator.clipboard?.writeText(window.location.href)}
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                onClick={handleShare}
+                data-testid="btn-share-article"
+                className={`flex items-center gap-2 text-sm font-medium transition-all px-3 py-1.5 rounded-full border ${copied ? "border-green-200 bg-green-50 text-green-700" : "border-border text-muted-foreground hover:text-primary hover:border-primary"}`}
               >
-                <Share2 className="w-4 h-4" /> Share
+                {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Share2 className="w-4 h-4" /> Share</>}
               </button>
             </div>
           </motion.div>
