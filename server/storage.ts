@@ -1,34 +1,5 @@
 import { randomUUID } from "crypto";
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
-import { join } from "path";
 import { type InsertEnquiry, type Enquiry } from "@shared/schema";
-
-const DATA_DIR = join(process.cwd(), "data");
-const ENQUIRIES_FILE = join(DATA_DIR, "enquiries.json");
-
-function ensureDataDir() {
-  if (!existsSync(DATA_DIR)) {
-    mkdirSync(DATA_DIR, { recursive: true });
-  }
-}
-
-function readEnquiries(): Enquiry[] {
-  ensureDataDir();
-  if (!existsSync(ENQUIRIES_FILE)) {
-    writeFileSync(ENQUIRIES_FILE, JSON.stringify([], null, 2));
-    return [];
-  }
-  try {
-    return JSON.parse(readFileSync(ENQUIRIES_FILE, "utf-8"));
-  } catch {
-    return [];
-  }
-}
-
-function writeEnquiries(enquiries: Enquiry[]) {
-  ensureDataDir();
-  writeFileSync(ENQUIRIES_FILE, JSON.stringify(enquiries, null, 2));
-}
 
 export interface IStorage {
   createEnquiry(data: InsertEnquiry): Promise<Enquiry>;
@@ -37,9 +8,57 @@ export interface IStorage {
   updateEnquiryStatus(id: string, status: Enquiry["status"]): Promise<Enquiry | undefined>;
 }
 
-export class JsonStorage implements IStorage {
+// ── In-Memory Storage (used on Vercel — data persists per serverless instance) ──
+class MemoryStorage implements IStorage {
+  private enquiries: Enquiry[] = [];
+
   async createEnquiry(data: InsertEnquiry): Promise<Enquiry> {
-    const enquiries = readEnquiries();
+    const enquiry: Enquiry = {
+      ...data,
+      id: randomUUID(),
+      status: "new",
+      createdAt: new Date().toISOString(),
+    };
+    this.enquiries.unshift(enquiry);
+    return enquiry;
+  }
+
+  async getEnquiries(): Promise<Enquiry[]> {
+    return this.enquiries;
+  }
+
+  async getEnquiry(id: string): Promise<Enquiry | undefined> {
+    return this.enquiries.find((e) => e.id === id);
+  }
+
+  async updateEnquiryStatus(id: string, status: Enquiry["status"]): Promise<Enquiry | undefined> {
+    const idx = this.enquiries.findIndex((e) => e.id === id);
+    if (idx === -1) return undefined;
+    this.enquiries[idx].status = status;
+    return this.enquiries[idx];
+  }
+}
+
+// ── JSON File Storage (used locally — data persists to disk) ──
+class JsonStorage implements IStorage {
+  private filePath: string;
+
+  constructor() {
+    const { join } = require("path");
+    const { existsSync, mkdirSync, readFileSync, writeFileSync } = require("fs");
+    const dataDir = join(process.cwd(), "data");
+    this.filePath = join(dataDir, "enquiries.json");
+    if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true });
+    if (!existsSync(this.filePath)) writeFileSync(this.filePath, "[]");
+    // Store helpers on instance to avoid re-importing
+    (this as any)._read = () => {
+      try { return JSON.parse(readFileSync(this.filePath, "utf-8")); } catch { return []; }
+    };
+    (this as any)._write = (data: Enquiry[]) => writeFileSync(this.filePath, JSON.stringify(data, null, 2));
+  }
+
+  async createEnquiry(data: InsertEnquiry): Promise<Enquiry> {
+    const enquiries: Enquiry[] = (this as any)._read();
     const enquiry: Enquiry = {
       ...data,
       id: randomUUID(),
@@ -47,27 +66,28 @@ export class JsonStorage implements IStorage {
       createdAt: new Date().toISOString(),
     };
     enquiries.unshift(enquiry);
-    writeEnquiries(enquiries);
+    (this as any)._write(enquiries);
     return enquiry;
   }
 
   async getEnquiries(): Promise<Enquiry[]> {
-    return readEnquiries();
+    return (this as any)._read();
   }
 
   async getEnquiry(id: string): Promise<Enquiry | undefined> {
-    const enquiries = readEnquiries();
-    return enquiries.find((e) => e.id === id);
+    return ((this as any)._read() as Enquiry[]).find((e) => e.id === id);
   }
 
   async updateEnquiryStatus(id: string, status: Enquiry["status"]): Promise<Enquiry | undefined> {
-    const enquiries = readEnquiries();
+    const enquiries: Enquiry[] = (this as any)._read();
     const idx = enquiries.findIndex((e) => e.id === id);
     if (idx === -1) return undefined;
     enquiries[idx].status = status;
-    writeEnquiries(enquiries);
+    (this as any)._write(enquiries);
     return enquiries[idx];
   }
 }
 
-export const storage = new JsonStorage();
+// Auto-select: Vercel → Memory, Local → JSON file
+const IS_VERCEL = process.env.VERCEL === "1";
+export const storage: IStorage = IS_VERCEL ? new MemoryStorage() : new JsonStorage();
