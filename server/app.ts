@@ -1,6 +1,7 @@
 import { type Server } from "node:http";
 
 import express, { type Express, type Request, Response, NextFunction } from "express";
+import helmet from "helmet";
 import { registerRoutes } from "./routes";
 
 export function log(message: string, source = "express") {
@@ -21,6 +22,23 @@ declare module 'http' {
     rawBody: unknown
   }
 }
+// Security headers — helmet with relaxed CSP for inline styles (Tailwind)
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "www.youtube-nocookie.com"],
+        frameSrc: ["'self'", "www.youtube-nocookie.com", "www.youtube.com"],
+        imgSrc: ["'self'", "data:", "https:", "img.youtube.com"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        connectSrc: ["'self'"],
+        fontSrc: ["'self'", "data:"],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+  })
+);
 app.use(express.json({
   verify: (req, _res, buf) => {
     req.rawBody = buf;
