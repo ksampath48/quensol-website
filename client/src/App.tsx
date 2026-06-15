@@ -3,6 +3,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { LanguageProvider } from "@/lib/i18n";
 import { StickyQuoteForm } from "@/components/layout/StickyQuoteForm";
 import { DualCTABar } from "@/components/layout/DualCTABar";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
@@ -20,6 +21,7 @@ import StandingOrder from "@/pages/StandingOrder";
 import Distributor from "@/pages/Distributor";
 import Videos from "@/pages/Videos";
 import HospitalProcurement from "@/pages/HospitalProcurement";
+import PrivateLabel from "@/pages/PrivateLabel";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -38,6 +40,7 @@ function Router() {
       <Route path="/distributors" component={Distributor} />
       <Route path="/videos" component={Videos} />
       <Route path="/hospital-procurement" component={HospitalProcurement} />
+      <Route path="/private-label" component={PrivateLabel} />
       <Route path="/privacy">{() => <Legal page="privacy" />}</Route>
       <Route path="/terms">{() => <Legal page="terms" />}</Route>
       <Route path="/shipping">{() => <Legal page="shipping" />}</Route>
@@ -50,6 +53,7 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <LanguageProvider>
       <TooltipProvider>
         <Toaster />
         <Router />
@@ -58,6 +62,7 @@ function App() {
         <ScrollToTop />
         <CookieConsent />
       </TooltipProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }
