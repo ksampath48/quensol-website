@@ -1,6 +1,8 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/home/Hero";
 import { Features } from "@/components/home/Features";
+import { Testimonials } from "@/components/home/Testimonials";
+import { FAQ } from "@/components/home/FAQ";
 import { Footer } from "@/components/layout/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -12,30 +14,10 @@ import { ArrowRight, Award, Building2, FlaskConical, HardHat, Stethoscope } from
 import { cn } from "@/lib/utils";
 
 const INDUSTRIES = [
-  {
-    icon: Stethoscope,
-    title: "Healthcare & Hospitals",
-    desc: "Surgical and examination gloves meeting strict medical-grade standards for ORs, ICUs, and patient wards.",
-    color: "bg-blue-50 text-blue-600",
-  },
-  {
-    icon: FlaskConical,
-    title: "Pharmaceuticals",
-    desc: "Sterile, powder-free environments requiring absolute contamination control in clean rooms and labs.",
-    color: "bg-purple-50 text-purple-600",
-  },
-  {
-    icon: Building2,
-    title: "Food Processing",
-    desc: "Food-safe, highly durable vinyl and nitrile options for high-volume use in packaging and processing lines.",
-    color: "bg-green-50 text-green-600",
-  },
-  {
-    icon: HardHat,
-    title: "Industrial Safety",
-    desc: "Heavy-duty protection against chemicals, abrasions, and mechanical risks for EMS and field workers.",
-    color: "bg-orange-50 text-orange-600",
-  },
+  { icon: Stethoscope, title: "Healthcare & Hospitals", desc: "Surgical and examination gloves meeting strict medical-grade standards for ORs, ICUs, and patient wards.", color: "bg-blue-50 text-blue-600" },
+  { icon: FlaskConical, title: "Pharmaceuticals", desc: "Sterile, powder-free environments requiring absolute contamination control in clean rooms and labs.", color: "bg-purple-50 text-purple-600" },
+  { icon: Building2, title: "Food Processing", desc: "Food-safe, highly durable vinyl and nitrile options for high-volume use in packaging and processing lines.", color: "bg-green-50 text-green-600" },
+  { icon: HardHat, title: "Industrial Safety", desc: "Heavy-duty protection against chemicals, abrasions, and mechanical risks for EMS and field workers.", color: "bg-orange-50 text-orange-600" },
 ];
 
 export default function Home() {
@@ -46,32 +28,25 @@ export default function Home() {
   });
 
   const categories = ["All", "Nitrile", "Latex", "Vinyl", "Safety", "Surgical"];
-
-  const filtered = activeCategory === "All"
-    ? products
-    : products.filter((p) => p.category === activeCategory);
-
+  const filtered = activeCategory === "All" ? products : products.filter((p) => p.category === activeCategory);
   const enriched = filtered.map((p) => ({ ...p, image: productImages[p.id] }));
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-
       <main>
         <Hero />
         <Features />
 
-        {/* About Us */}
+        {/* About */}
         <section id="about" className="py-24 bg-white">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div>
                 <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">Our Story</p>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6 text-foreground">
-                  Built on Trust, Driven by Quality
-                </h2>
+                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Built on Trust, Driven by Quality</h2>
                 <p className="text-muted-foreground leading-relaxed mb-5">
-                  At Quensol, we are dedicated to providing the highest quality protective equipment to healthcare professionals, industrial workers, and laboratories across India. With our state-of-the-art manufacturing partners and rigorous quality control processes, we ensure that every pair of gloves meets international safety standards.
+                  At Quensol, we are dedicated to providing the highest quality protective equipment to healthcare professionals, industrial workers, and laboratories across India. With our state-of-the-art manufacturing partners and rigorous quality control processes, we ensure every pair of gloves meets international safety standards.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mb-8">
                   Our mission is to protect those who protect others. We believe in building long-term partnerships with our clients by offering reliable supply chains, transparent pricing, and unparalleled customer support.
@@ -84,7 +59,6 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-
               <div className="grid grid-cols-2 gap-5">
                 {[
                   { value: "10M+", label: "Gloves Delivered", sub: "Since inception" },
@@ -108,15 +82,13 @@ export default function Home() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-14">
               <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">Sectors We Cover</p>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-foreground">Industries We Serve</h2>
-              <p className="text-muted-foreground max-w-xl mx-auto">
-                Specialized hand protection solutions tailored for the specific demands of diverse professional environments.
-              </p>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Industries We Serve</h2>
+              <p className="text-muted-foreground max-w-xl mx-auto">Specialized hand protection solutions tailored for diverse professional environments.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {INDUSTRIES.map((industry, i) => (
                 <div key={i} className="bg-white p-7 rounded-2xl shadow-sm border border-border hover:shadow-md transition-all hover:-translate-y-1 group">
-                  <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-colors", industry.color)}>
+                  <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center mb-4", industry.color)}>
                     <industry.icon className="w-5 h-5" />
                   </div>
                   <h3 className="font-bold text-base mb-2">{industry.title}</h3>
@@ -133,19 +105,13 @@ export default function Home() {
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
               <div>
                 <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-2">Our Range</p>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-3 text-foreground">Featured Catalogue</h2>
-                <p className="text-muted-foreground max-w-lg">
-                  Explore our highest-rated medical protection products, trusted by professionals across India.
-                </p>
+                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-3">Featured Catalogue</h2>
+                <p className="text-muted-foreground max-w-lg">Explore our highest-rated medical protection products, trusted by professionals across India.</p>
               </div>
               <div className="flex flex-wrap bg-white rounded-full p-1 border border-border shadow-xs gap-1 self-start">
                 {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveCategory(cat)}
-                    data-testid={`btn-filter-${cat.toLowerCase()}`}
-                    className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${activeCategory === cat ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-primary"}`}
-                  >
+                  <button key={cat} onClick={() => setActiveCategory(cat)}
+                    className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${activeCategory === cat ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-primary"}`}>
                     {cat}
                   </button>
                 ))}
@@ -154,15 +120,11 @@ export default function Home() {
 
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="bg-muted/30 rounded-2xl animate-pulse h-80" />
-                ))}
+                {[...Array(6)].map((_, i) => <div key={i} className="bg-muted/30 rounded-2xl animate-pulse h-80" />)}
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {enriched.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
+                {enriched.map((product) => <ProductCard key={product.id} product={product} />)}
               </div>
             )}
 
@@ -176,46 +138,44 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Testimonials */}
+        <Testimonials />
+
+        {/* FAQ */}
+        <FAQ />
+
         {/* Contact CTA */}
         <section id="contact" className="py-24 bg-primary text-white relative overflow-hidden">
           <div className="absolute inset-0 opacity-10"
             style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "32px 32px" }} />
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">
-                Equip Your Entire Facility
-              </h2>
+              <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">Equip Your Entire Facility</h2>
               <p className="text-primary-foreground/80 text-lg mb-10 max-w-2xl mx-auto">
                 Get specialized pricing, automated reordering, and dedicated account management for hospitals, clinics, and labs.
               </p>
-
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
-                <a
-                  href="tel:+917386101845"
-                  className="inline-flex items-center justify-center h-12 px-8 bg-white text-primary font-bold rounded-full hover:bg-white/90 transition-colors shadow-lg"
-                  data-testid="link-call-cta"
-                >
+                <a href="tel:+917386101845"
+                  className="inline-flex items-center justify-center h-12 px-8 bg-white text-primary font-bold rounded-full hover:bg-white/90 transition-colors shadow-lg">
                   📞 Call +91 7386101845
                 </a>
                 <button
                   onClick={() => window.dispatchEvent(new CustomEvent("open-quote-form", { detail: {} }))}
-                  className="inline-flex items-center justify-center h-12 px-8 border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-colors gap-2"
-                  data-testid="btn-get-quote-cta"
-                >
+                  className="inline-flex items-center justify-center h-12 px-8 border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-colors gap-2">
                   Request a Bulk Quote <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-primary-foreground/70 max-w-xl mx-auto">
+              <div className="flex flex-wrap justify-center gap-6 text-sm text-primary-foreground/70">
+                <div className="flex items-center gap-2">
+                  <a href="/samples" className="underline underline-offset-2 hover:text-white">Request Free Samples</a>
+                </div>
                 <div>📧 support@quensol.com</div>
-                <div>🕐 Mon–Sat, 9AM–7PM IST</div>
                 <div>📍 Hyderabad, India</div>
               </div>
             </div>
           </div>
         </section>
       </main>
-
       <Footer />
     </div>
   );
