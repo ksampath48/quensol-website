@@ -1,11 +1,16 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
+import path from "node:path";
 import { storage } from "./storage";
 import { insertEnquirySchema, products } from "@shared/schema";
 import { ZodError } from "zod";
 import { sendEnquiryNotification } from "./mailer";
+import { enquiryLimiter, apiLimiter } from "./middleware/rateLimit";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Apply general rate limit to all API routes
+  app.use("/api", apiLimiter);
+
   // ── Products ──────────────────────────────────────────────────────────
   app.get("/api/products", (_req: Request, res: Response) => {
     res.json(products);
@@ -21,7 +26,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ── Enquiries ─────────────────────────────────────────────────────────
-  app.post("/api/enquiries", async (req: Request, res: Response) => {
+  app.post("/api/enquiries", enquiryLimiter, async (req: Request, res: Response) => {
     try {
       const data = insertEnquirySchema.parse({
         ...req.body,

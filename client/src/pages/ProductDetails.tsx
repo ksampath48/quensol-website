@@ -14,6 +14,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { useState } from "react";
+import { SizeGuideModal } from "@/components/products/SizeGuideModal";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
@@ -25,6 +26,7 @@ export default function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("M");
   const [selectedType, setSelectedType] = useState("Box (100 ct)");
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
 
   const { data: product, isLoading } = useQuery<ApiProduct>({
     queryKey: [`/api/products/${params?.id}`],
@@ -146,7 +148,11 @@ export default function ProductDetails() {
                 <div>
                   <div className="flex justify-between items-center mb-3">
                     <label className="font-bold text-sm">Select Size</label>
-                    <button className="text-primary text-xs font-medium hover:underline flex items-center gap-1">
+                    <button
+                      onClick={() => setShowSizeGuide(true)}
+                      data-testid="btn-size-guide"
+                      className="text-primary text-xs font-medium hover:underline flex items-center gap-1"
+                    >
                       <Info className="w-3 h-3" /> Size Guide
                     </button>
                   </div>
@@ -279,6 +285,7 @@ export default function ProductDetails() {
       </main>
 
       <Footer />
+      {showSizeGuide && <SizeGuideModal onClose={() => setShowSizeGuide(false)} />}
     </div>
   );
 }

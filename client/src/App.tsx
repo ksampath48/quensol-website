@@ -5,14 +5,31 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { StickyQuoteForm } from "@/components/layout/StickyQuoteForm";
 import Home from "@/pages/Home";
+import Catalog from "@/pages/Catalog";
 import ProductDetails from "@/pages/ProductDetails";
+import Admin from "@/pages/Admin";
+import Legal from "@/pages/Legal";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/catalog" component={Catalog} />
       <Route path="/product/:id" component={ProductDetails} />
+      <Route path="/admin" component={Admin} />
+      <Route path="/privacy">
+        {() => <Legal page="privacy" />}
+      </Route>
+      <Route path="/terms">
+        {() => <Legal page="terms" />}
+      </Route>
+      <Route path="/shipping">
+        {() => <Legal page="shipping" />}
+      </Route>
+      <Route path="/returns">
+        {() => <Legal page="returns" />}
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );

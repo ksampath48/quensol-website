@@ -4,11 +4,39 @@ import { Features } from "@/components/home/Features";
 import { Footer } from "@/components/layout/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
 import { Button } from "@/components/ui/button";
-import { Filter } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchProducts, type ApiProduct } from "@/lib/api";
 import { productImages } from "@/lib/data";
 import { useState } from "react";
+import { ArrowRight, Award, Building2, FlaskConical, HardHat, Stethoscope } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const INDUSTRIES = [
+  {
+    icon: Stethoscope,
+    title: "Healthcare & Hospitals",
+    desc: "Surgical and examination gloves meeting strict medical-grade standards for ORs, ICUs, and patient wards.",
+    color: "bg-blue-50 text-blue-600",
+  },
+  {
+    icon: FlaskConical,
+    title: "Pharmaceuticals",
+    desc: "Sterile, powder-free environments requiring absolute contamination control in clean rooms and labs.",
+    color: "bg-purple-50 text-purple-600",
+  },
+  {
+    icon: Building2,
+    title: "Food Processing",
+    desc: "Food-safe, highly durable vinyl and nitrile options for high-volume use in packaging and processing lines.",
+    color: "bg-green-50 text-green-600",
+  },
+  {
+    icon: HardHat,
+    title: "Industrial Safety",
+    desc: "Heavy-duty protection against chemicals, abrasions, and mechanical risks for EMS and field workers.",
+    color: "bg-orange-50 text-orange-600",
+  },
+];
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -31,30 +59,43 @@ export default function Home() {
 
       <main>
         <Hero />
-
         <Features />
 
-        {/* About Us Section */}
+        {/* About Us */}
         <section id="about" className="py-24 bg-white">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6 text-foreground">About Quensol</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                At Quensol, we are dedicated to providing the highest quality protective equipment to healthcare professionals, industrial workers, and laboratories across India. With our state-of-the-art manufacturing partners and rigorous quality control processes, we ensure that every pair of gloves meets international safety standards.
-              </p>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-10">
-                Our mission is to protect those who protect others. We believe in building long-term partnerships with our clients by offering reliable supply chains, transparent pricing, and unparalleled customer support.
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-border">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div>
+                <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">Our Story</p>
+                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6 text-foreground">
+                  Built on Trust, Driven by Quality
+                </h2>
+                <p className="text-muted-foreground leading-relaxed mb-5">
+                  At Quensol, we are dedicated to providing the highest quality protective equipment to healthcare professionals, industrial workers, and laboratories across India. With our state-of-the-art manufacturing partners and rigorous quality control processes, we ensure that every pair of gloves meets international safety standards.
+                </p>
+                <p className="text-muted-foreground leading-relaxed mb-8">
+                  Our mission is to protect those who protect others. We believe in building long-term partnerships with our clients by offering reliable supply chains, transparent pricing, and unparalleled customer support.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {["ISO 9001:2015", "CE Marked", "FDA Listed", "ASTM D6319"].map((cert) => (
+                    <span key={cert} className="flex items-center gap-1.5 text-xs font-semibold border border-border px-3 py-1.5 rounded-full text-muted-foreground">
+                      <Award className="w-3 h-3 text-primary" /> {cert}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-5">
                 {[
-                  { value: "10M+", label: "Gloves Delivered" },
-                  { value: "500+", label: "Hospital Partners" },
-                  { value: "ISO", label: "Certified Quality" },
-                  { value: "24/7", label: "Dedicated Support" },
+                  { value: "10M+", label: "Gloves Delivered", sub: "Since inception" },
+                  { value: "500+", label: "Hospital Partners", sub: "Across India" },
+                  { value: "ISO", label: "Certified Quality", sub: "9001:2015 Standard" },
+                  { value: "24/7", label: "Dedicated Support", sub: "+91 7386101845" },
                 ].map((stat, i) => (
-                  <div key={i}>
-                    <h4 className="font-heading font-bold text-3xl text-primary mb-2">{stat.value}</h4>
-                    <p className="text-sm text-muted-foreground font-medium uppercase tracking-wide">{stat.label}</p>
+                  <div key={i} className="bg-slate-50 rounded-2xl p-6 border border-border">
+                    <h4 className="font-heading font-black text-3xl text-primary mb-1">{stat.value}</h4>
+                    <p className="font-semibold text-sm text-foreground">{stat.label}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{stat.sub}</p>
                   </div>
                 ))}
               </div>
@@ -62,52 +103,52 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Industries Section */}
+        {/* Industries */}
         <section id="industries" className="py-20 bg-slate-50">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
+            <div className="text-center mb-14">
+              <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">Sectors We Cover</p>
               <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-foreground">Industries We Serve</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">Specialized hand protection solutions tailored for the specific demands of diverse professional environments.</p>
+              <p className="text-muted-foreground max-w-xl mx-auto">
+                Specialized hand protection solutions tailored for the specific demands of diverse professional environments.
+              </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { title: "Healthcare & Hospitals", desc: "Surgical and examination gloves meeting strict medical grade standards." },
-                { title: "Pharmaceuticals", desc: "Sterile, powder-free environments requiring absolute contamination control." },
-                { title: "Food Processing", desc: "Food-safe, highly durable vinyl and nitrile options for high-volume use." },
-                { title: "Industrial Safety", desc: "Heavy-duty protection against chemicals, abrasions, and mechanical risks." },
-              ].map((industry, i) => (
-                <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-border hover:shadow-md transition-shadow">
-                  <div className="w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center font-bold text-xl mb-4">
-                    {i + 1}
+              {INDUSTRIES.map((industry, i) => (
+                <div key={i} className="bg-white p-7 rounded-2xl shadow-sm border border-border hover:shadow-md transition-all hover:-translate-y-1 group">
+                  <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-colors", industry.color)}>
+                    <industry.icon className="w-5 h-5" />
                   </div>
-                  <h3 className="font-bold text-lg mb-2">{industry.title}</h3>
-                  <p className="text-sm text-muted-foreground">{industry.desc}</p>
+                  <h3 className="font-bold text-base mb-2">{industry.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{industry.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Products Section */}
+        {/* Products */}
         <section id="products" className="py-20 bg-white">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
               <div>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-foreground">Featured Catalogue</h2>
-                <p className="text-muted-foreground max-w-lg">Explore our highest rated medical protection products, trusted by professionals across the globe.</p>
+                <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-2">Our Range</p>
+                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-3 text-foreground">Featured Catalogue</h2>
+                <p className="text-muted-foreground max-w-lg">
+                  Explore our highest-rated medical protection products, trusted by professionals across India.
+                </p>
               </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="flex flex-wrap bg-white rounded-full p-1 border border-border shadow-xs gap-1">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setActiveCategory(cat)}
-                      className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${activeCategory === cat ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-primary"}`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
+              <div className="flex flex-wrap bg-white rounded-full p-1 border border-border shadow-xs gap-1 self-start">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    data-testid={`btn-filter-${cat.toLowerCase()}`}
+                    className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${activeCategory === cat ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-primary"}`}
+                  >
+                    {cat}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -125,24 +166,52 @@ export default function Home() {
               </div>
             )}
 
-            <div className="mt-16 text-center">
-              <Button size="lg" variant="outline" className="px-8 rounded-full h-12 border-primary text-primary hover:bg-primary hover:text-white">
-                View Full Catalog
-              </Button>
+            <div className="mt-14 text-center">
+              <a href="/catalog">
+                <Button size="lg" className="px-8 rounded-full h-12 shadow-lg shadow-primary/20 gap-2">
+                  View Full Catalog <ArrowRight className="w-4 h-4" />
+                </Button>
+              </a>
             </div>
           </div>
         </section>
 
-        {/* Contact / CTA Section */}
+        {/* Contact CTA */}
         <section id="contact" className="py-24 bg-primary text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-          <div className="container mx-auto px-4 text-center relative z-10">
-            <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">Equip Your Entire Facility</h2>
-            <p className="text-primary-foreground/80 text-lg mb-8 max-w-2xl mx-auto">
-              Get specialized pricing, automated reordering, and dedicated account management for hospitals and clinics.
-            </p>
-            <p className="text-primary-foreground/90 font-bold text-xl mb-2">📞 +91 7386101845</p>
-            <p className="text-primary-foreground/70 mb-8">support@quensol.com</p>
+          <div className="absolute inset-0 opacity-10"
+            style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "32px 32px" }} />
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">
+                Equip Your Entire Facility
+              </h2>
+              <p className="text-primary-foreground/80 text-lg mb-10 max-w-2xl mx-auto">
+                Get specialized pricing, automated reordering, and dedicated account management for hospitals, clinics, and labs.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
+                <a
+                  href="tel:+917386101845"
+                  className="inline-flex items-center justify-center h-12 px-8 bg-white text-primary font-bold rounded-full hover:bg-white/90 transition-colors shadow-lg"
+                  data-testid="link-call-cta"
+                >
+                  📞 Call +91 7386101845
+                </a>
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent("open-quote-form", { detail: {} }))}
+                  className="inline-flex items-center justify-center h-12 px-8 border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-colors gap-2"
+                  data-testid="btn-get-quote-cta"
+                >
+                  Request a Bulk Quote <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-primary-foreground/70 max-w-xl mx-auto">
+                <div>📧 support@quensol.com</div>
+                <div>🕐 Mon–Sat, 9AM–7PM IST</div>
+                <div>📍 Hyderabad, India</div>
+              </div>
+            </div>
           </div>
         </section>
       </main>
