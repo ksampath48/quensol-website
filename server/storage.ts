@@ -1,4 +1,6 @@
 import { randomUUID } from "crypto";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { join } from "path";
 import { type InsertEnquiry, type Enquiry } from "@shared/schema";
 
 export interface IStorage {
@@ -44,21 +46,26 @@ class JsonStorage implements IStorage {
   private filePath: string;
 
   constructor() {
-    const { join } = require("path");
-    const { existsSync, mkdirSync, readFileSync, writeFileSync } = require("fs");
     const dataDir = join(process.cwd(), "data");
     this.filePath = join(dataDir, "enquiries.json");
     if (!existsSync(dataDir)) mkdirSync(dataDir, { recursive: true });
     if (!existsSync(this.filePath)) writeFileSync(this.filePath, "[]");
-    // Store helpers on instance to avoid re-importing
-    (this as any)._read = () => {
-      try { return JSON.parse(readFileSync(this.filePath, "utf-8")); } catch { return []; }
-    };
-    (this as any)._write = (data: Enquiry[]) => writeFileSync(this.filePath, JSON.stringify(data, null, 2));
+  }
+
+  private read(): Enquiry[] {
+    try {
+      return JSON.parse(readFileSync(this.filePath, "utf-8"));
+    } catch {
+      return [];
+    }
+  }
+
+  private write(data: Enquiry[]): void {
+    writeFileSync(this.filePath, JSON.stringify(data, null, 2));
   }
 
   async createEnquiry(data: InsertEnquiry): Promise<Enquiry> {
-    const enquiries: Enquiry[] = (this as any)._read();
+    const enquiries = this.read();
     const enquiry: Enquiry = {
       ...data,
       id: randomUUID(),
@@ -66,24 +73,24 @@ class JsonStorage implements IStorage {
       createdAt: new Date().toISOString(),
     };
     enquiries.unshift(enquiry);
-    (this as any)._write(enquiries);
+    this.write(enquiries);
     return enquiry;
   }
 
   async getEnquiries(): Promise<Enquiry[]> {
-    return (this as any)._read();
+    return this.read();
   }
 
   async getEnquiry(id: string): Promise<Enquiry | undefined> {
-    return ((this as any)._read() as Enquiry[]).find((e) => e.id === id);
+    return this.read().find((e) => e.id === id);
   }
 
   async updateEnquiryStatus(id: string, status: Enquiry["status"]): Promise<Enquiry | undefined> {
-    const enquiries: Enquiry[] = (this as any)._read();
+    const enquiries = this.read();
     const idx = enquiries.findIndex((e) => e.id === id);
     if (idx === -1) return undefined;
     enquiries[idx].status = status;
-    (this as any)._write(enquiries);
+    this.write(enquiries);
     return enquiries[idx];
   }
 }
