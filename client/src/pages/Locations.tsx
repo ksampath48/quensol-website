@@ -357,30 +357,108 @@ function CityPage({ city }: { city: CityData }) {
     const kwds = document.querySelector('meta[name="keywords"]');
     if (kwds) kwds.setAttribute("content", city.keywords);
 
-    const ldJson = {
+    // 1. LocalBusiness (SEO + GEO entity signal)
+    const localBiz = {
       "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": `Quensol — Medical Gloves Supplier ${city.name}`,
+      "@type": ["LocalBusiness", "MedicalBusiness"],
+      "name": `Quensol — Medical Gloves Supplier in ${city.name}`,
       "description": city.metaDesc,
       "telephone": "+91-7386101845",
+      "email": "support@quensol.com",
       "url": `https://quensol.com/locations/${city.slug}`,
-      "areaServed": { "@type": "City", "name": city.name },
+      "logo": "https://quensol.com/favicon.png",
+      "image": "https://quensol.com/favicon.png",
       "priceRange": "₹₹",
-      "aggregateRating": { "@type": "AggregateRating", "ratingValue": city.avgRating, "reviewCount": String(Math.floor(city.activeCustomers * 0.6)) },
+      "areaServed": [
+        { "@type": "City", "name": city.name },
+        { "@type": "State", "name": city.state },
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Medical Gloves",
+        "itemListElement": city.topProducts.map(p => ({
+          "@type": "Offer",
+          "itemOffered": { "@type": "Product", "name": p.name, "url": `https://quensol.com${p.href}` },
+        })),
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": city.avgRating,
+        "reviewCount": String(Math.floor(city.activeCustomers * 0.6)),
+        "bestRating": "5",
+      },
     };
-    let script = document.getElementById("city-ld-json") as HTMLScriptElement | null;
-    if (!script) {
-      script = document.createElement("script");
-      script.id = "city-ld-json";
-      script.type = "application/ld+json";
-      document.head.appendChild(script);
-    }
-    script.textContent = JSON.stringify(ldJson);
+
+    // 2. BreadcrumbList (SEO — breadcrumb rich results)
+    const breadcrumb = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://quensol.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Locations", "item": "https://quensol.com/locations" },
+        { "@type": "ListItem", "position": 3, "name": `Medical Gloves in ${city.name}`, "item": `https://quensol.com/locations/${city.slug}` },
+      ],
+    };
+
+    // 3. FAQPage — per city (AEO: featured snippets, AI direct answers)
+    const faqPage = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "speakable": { "@type": "SpeakableSpecification", "cssSelector": ["h1", "h2", ".faq-answer"] },
+      "mainEntity": city.faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": { "@type": "Answer", "text": faq.a },
+      })),
+    };
+
+    // 4. Service schema (GEO — helps LLMs understand what Quensol offers in this city)
+    const service = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": `Medical Gloves Supply in ${city.name}`,
+      "provider": { "@type": "Organization", "name": "Quensol", "url": "https://quensol.com" },
+      "areaServed": { "@type": "City", "name": city.name },
+      "description": city.description,
+      "serviceType": "Medical Supply — Disposable Gloves",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "INR",
+        "description": `Bulk medical gloves delivered to ${city.name} in ${city.deliveryDays}`,
+        "eligibleRegion": { "@type": "City", "name": city.name },
+        "url": `https://quensol.com/locations/${city.slug}`,
+      },
+    };
+
+    const schemas = [
+      { id: "city-ld-localbiz", data: localBiz },
+      { id: "city-ld-breadcrumb", data: breadcrumb },
+      { id: "city-ld-faq", data: faqPage },
+      { id: "city-ld-service", data: service },
+    ];
+
+    schemas.forEach(({ id, data }) => {
+      let el = document.getElementById(id) as HTMLScriptElement | null;
+      if (!el) {
+        el = document.createElement("script");
+        el.id = id;
+        el.type = "application/ld+json";
+        document.head.appendChild(el);
+      }
+      el.textContent = JSON.stringify(data);
+    });
+
+    // Canonical tag per city
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (canonical) canonical.setAttribute("href", `https://quensol.com/locations/${city.slug}`);
 
     return () => {
       document.title = "Quensol | Premium Medical Gloves Supplier in India";
-      const el = document.getElementById("city-ld-json");
-      if (el) el.remove();
+      ["city-ld-localbiz","city-ld-breadcrumb","city-ld-faq","city-ld-service"].forEach(id => {
+        document.getElementById(id)?.remove();
+      });
+      const c = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+      if (c) c.setAttribute("href", "https://quensol.com/");
     };
   }, [city]);
 
@@ -538,7 +616,7 @@ function CityPage({ city }: { city: CityData }) {
             {/* Sidebar */}
             <div className="space-y-5">
               {/* Contact card */}
-              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 sticky top-28">
+              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 lg:sticky lg:top-28">
                 <h3 className="font-bold mb-1">Get a Quote for {city.name}</h3>
                 <p className="text-xs text-muted-foreground mb-4">Our team responds within 2 hours on business days.</p>
                 <div className="space-y-3 text-sm mb-5">
