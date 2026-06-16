@@ -75,6 +75,20 @@ export default function BlogPost() {
             <ArrowLeft className="w-4 h-4" /> Back to Resources
           </button>
 
+          {/* Hero image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 1.02 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="rounded-2xl overflow-hidden mb-8 h-64 md:h-80"
+          >
+            <img
+              src={post.image}
+              alt={post.title}
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+
           {/* Header */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center gap-2 mb-4 flex-wrap">
