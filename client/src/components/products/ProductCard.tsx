@@ -46,7 +46,7 @@ export function ProductCard({ product, compareSelected, onToggleCompare, compare
         className="relative aspect-square rounded-xl overflow-hidden bg-muted/30 mb-4 p-6 flex items-center justify-center cursor-pointer"
       >
         {product.image && (
-          <img src={product.image} alt={product.name}
+          <img src={product.image} alt={product.name} loading="lazy"
             className="w-full h-full object-contain drop-shadow-xl group-hover:scale-110 transition-transform duration-500" />
         )}
         {product.badge && (
