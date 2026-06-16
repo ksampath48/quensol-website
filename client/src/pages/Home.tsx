@@ -15,6 +15,7 @@ import { useState } from "react";
 import { ArrowRight, Award, Building2, FlaskConical, HardHat, Stethoscope } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useI18n } from "@/lib/i18n";
 
 const INDUSTRIES = [
   { icon: Stethoscope, title: "Healthcare & Hospitals", desc: "Surgical and examination gloves meeting strict medical-grade standards for ORs, ICUs, and patient wards.", color: "bg-blue-50 text-blue-600" },
@@ -32,6 +33,8 @@ const STATS = [
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const { t } = useI18n();
+
   const { data: products = [], isLoading } = useQuery<ApiProduct[]>({
     queryKey: ["/api/products"],
     queryFn: fetchProducts,
@@ -55,14 +58,10 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <FadeIn direction="left">
                 <div>
-                  <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">Our Story</p>
-                  <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Built on Trust, Driven by Quality</h2>
-                  <p className="text-muted-foreground leading-relaxed mb-5">
-                    At Quensol, we are dedicated to providing the highest quality protective equipment to healthcare professionals, industrial workers, and laboratories across India. With our state-of-the-art manufacturing partners and rigorous quality control processes, we ensure every pair of gloves meets international safety standards.
-                  </p>
-                  <p className="text-muted-foreground leading-relaxed mb-8">
-                    Our mission is to protect those who protect others. We believe in building long-term partnerships with our clients by offering reliable supply chains, transparent pricing, and unparalleled customer support.
-                  </p>
+                  <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">{t("section.about.label")}</p>
+                  <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">{t("section.about.heading")}</h2>
+                  <p className="text-muted-foreground leading-relaxed mb-5">{t("section.about.body1")}</p>
+                  <p className="text-muted-foreground leading-relaxed mb-8">{t("section.about.body2")}</p>
                   <div className="flex flex-wrap gap-3">
                     {["ISO 9001:2015", "CE Marked", "FDA Listed", "ASTM D6319"].map((cert) => (
                       <span key={cert} className="flex items-center gap-1.5 text-xs font-semibold border border-border px-3 py-1.5 rounded-full text-muted-foreground">
@@ -92,9 +91,9 @@ export default function Home() {
           <div className="container mx-auto px-4">
             <FadeIn direction="up">
               <div className="text-center mb-14">
-                <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">Sectors We Cover</p>
-                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Industries We Serve</h2>
-                <p className="text-muted-foreground max-w-xl mx-auto">Specialized hand protection solutions tailored for diverse professional environments.</p>
+                <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">{t("section.industries.label")}</p>
+                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">{t("section.industries.heading")}</h2>
+                <p className="text-muted-foreground max-w-xl mx-auto">{t("section.industries.sub")}</p>
               </div>
             </FadeIn>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -119,9 +118,9 @@ export default function Home() {
             <FadeIn direction="up">
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
                 <div>
-                  <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-2">Our Range</p>
-                  <h2 className="text-3xl md:text-4xl font-heading font-bold mb-3">Featured Catalogue</h2>
-                  <p className="text-muted-foreground max-w-lg">Explore our highest-rated medical protection products, trusted by professionals across India.</p>
+                  <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-2">{t("section.products.label")}</p>
+                  <h2 className="text-3xl md:text-4xl font-heading font-bold mb-3">{t("section.products.heading")}</h2>
+                  <p className="text-muted-foreground max-w-lg">{t("section.products.sub")}</p>
                 </div>
                 <div className="flex flex-wrap bg-white rounded-full p-1 border border-border shadow-xs gap-1 self-start">
                   {categories.map((cat) => (
@@ -158,7 +157,7 @@ export default function Home() {
               <div className="mt-14 text-center">
                 <a href="/catalog">
                   <Button size="lg" className="px-8 rounded-full h-12 shadow-lg shadow-primary/20 gap-2">
-                    View Full Catalog <ArrowRight className="w-4 h-4" />
+                    {t("cta.viewCatalog")} <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
               </div>
@@ -179,26 +178,26 @@ export default function Home() {
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
               <FadeIn direction="up">
-                <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">Equip Your Entire Facility</h2>
+                <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">{t("section.contact.heading")}</h2>
                 <p className="text-primary-foreground/80 text-lg mb-10 max-w-2xl mx-auto">
-                  Get specialized pricing, automated reordering, and dedicated account management for hospitals, clinics, and labs.
+                  {t("section.contact.sub")}
                 </p>
               </FadeIn>
               <FadeIn delay={0.15} direction="up">
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
                   <a href="tel:+917386101845"
                     className="inline-flex items-center justify-center h-12 px-8 bg-white text-primary font-bold rounded-full hover:bg-white/90 transition-colors shadow-lg">
-                    📞 Call +91 7386101845
+                    📞 {t("misc.callUs")} +91 7386101845
                   </a>
                   <button
                     onClick={() => window.dispatchEvent(new CustomEvent("open-quote-form", { detail: {} }))}
                     className="inline-flex items-center justify-center h-12 px-8 border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-colors gap-2">
-                    Request a Bulk Quote <ArrowRight className="w-4 h-4" />
+                    {t("cta.requestQuote")} <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
                 <div className="flex flex-wrap justify-center gap-6 text-sm text-primary-foreground/70">
                   <div className="flex items-center gap-2">
-                    <a href="/samples" className="underline underline-offset-2 hover:text-white">Request Free Samples</a>
+                    <a href="/samples" className="underline underline-offset-2 hover:text-white">{t("cta.freeSamples")}</a>
                   </div>
                   <div>📧 support@quensol.com</div>
                   <div>📍 Hyderabad, India</div>
