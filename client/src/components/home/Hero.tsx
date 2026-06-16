@@ -2,8 +2,11 @@ import heroBg from "@assets/generated_images/medical_hero_background.png";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
+import { useI18n } from "@/lib/i18n";
 
 export function Hero() {
+  const { t } = useI18n();
+
   const openQuoteForm = () => {
     window.dispatchEvent(new CustomEvent("open-quote-form", { detail: {} }));
   };
@@ -24,16 +27,16 @@ export function Hero() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/50 text-secondary-foreground text-sm font-medium mb-6 border border-secondary">
               <ShieldCheck className="w-4 h-4" />
-              <span>ISO Certified & Medical Grade Protection</span>
+              <span>{t("hero.badge")}</span>
             </div>
 
             <h1 className="text-5xl md:text-7xl font-heading font-bold text-foreground mb-6 leading-[1.1]">
-              Premium Protection <br />
-              <span className="text-gradient">For Professionals</span>
+              {t("hero.heading")} <br />
+              <span className="text-gradient">{t("hero.heading.accent")}</span>
             </h1>
 
             <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
-              Sourcing the highest quality medical gloves directly to clinics, hospitals, and laboratories across India. Nitrile, Latex, Vinyl and Safety options with bulk pricing.
+              {t("hero.subheading")}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -42,7 +45,7 @@ export function Hero() {
                   size="lg"
                   className="w-full sm:w-auto h-14 px-8 text-base rounded-full shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all hover:-translate-y-1"
                 >
-                  Shop All Products
+                  {t("hero.cta.catalog")}
                 </Button>
               </a>
               <Button
@@ -51,14 +54,14 @@ export function Hero() {
                 className="h-14 px-8 text-base rounded-full bg-white/50 backdrop-blur-sm border-primary/30 hover:bg-white"
                 onClick={openQuoteForm}
               >
-                Request Bulk Quote <ArrowRight className="ml-2 w-4 h-4" />
+                {t("hero.cta.quote")} <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </div>
 
             <div className="mt-12 flex items-center gap-4 flex-wrap">
-              {["ISO 9001", "FDA 510(k)", "ASTM D6319", "CE Marked"].map((badge) => (
-                <div key={badge} className="text-xs font-bold text-muted-foreground border border-border px-3 py-2 rounded-md bg-white/60">
-                  {badge}
+              {(["hero.cert1", "hero.cert2", "hero.cert3", "hero.cert4"] as const).map((key) => (
+                <div key={key} className="text-xs font-bold text-muted-foreground border border-border px-3 py-2 rounded-md bg-white/60">
+                  {t(key)}
                 </div>
               ))}
             </div>
