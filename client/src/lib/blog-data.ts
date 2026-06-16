@@ -1,3 +1,11 @@
+import nitrileVsLatex from "@assets/generated_images/blog-nitrile-vs-latex.png";
+import aqlRatings from "@assets/generated_images/blog-aql-ratings.png";
+import bulkProcurement from "@assets/generated_images/blog-bulk-procurement.png";
+import gloveSizing from "@assets/generated_images/blog-glove-sizing.png";
+import infectionControl from "@assets/generated_images/blog-infection-control.png";
+import supplyShortage from "@assets/generated_images/blog-supply-shortage.png";
+import standingOrders from "@assets/generated_images/blog-standing-orders.png";
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -7,6 +15,7 @@ export interface BlogPost {
   date: string;
   author: string;
   authorRole: string;
+  image: string;
   content: { heading?: string; body: string }[];
   tags: string[];
 }
@@ -21,6 +30,7 @@ export const blogPosts: BlogPost[] = [
     date: "May 20, 2025",
     author: "Quensol Medical Team",
     authorRole: "Product Specialists",
+    image: nitrileVsLatex,
     tags: ["Nitrile", "Latex", "Hospital Procurement", "Buying Guide"],
     content: [
       { body: "Choosing between nitrile and latex gloves is one of the most common procurement decisions for hospital purchase managers. Both materials offer excellent protection, but they differ significantly in allergy profile, tactile sensitivity, chemical resistance, and cost. Here's everything you need to make an informed decision." },
@@ -39,6 +49,7 @@ export const blogPosts: BlogPost[] = [
     date: "April 10, 2025",
     author: "Quensol Medical Team",
     authorRole: "Product Specialists",
+    image: aqlRatings,
     tags: ["AQL", "Quality Control", "Medical Standards", "Technical"],
     content: [
       { body: "When evaluating medical gloves, AQL (Acceptable Quality Level) is one of the most important specifications on the datasheet — yet it's frequently misunderstood. This guide explains what it means and how to use it." },
@@ -57,6 +68,7 @@ export const blogPosts: BlogPost[] = [
     date: "March 5, 2025",
     author: "Quensol Medical Team",
     authorRole: "Product Specialists",
+    image: bulkProcurement,
     tags: ["Procurement", "Hospital Management", "Bulk Orders", "Inventory"],
     content: [
       { body: "Managing PPE procurement for a hospital is complex. Gloves are typically one of the highest-volume consumables — a 300-bed hospital can consume 50,000–80,000 gloves per month. Getting procurement right means balancing cost, quality, lead time, and stockout risk." },
@@ -76,6 +88,7 @@ export const blogPosts: BlogPost[] = [
     date: "February 14, 2025",
     author: "Quensol Medical Team",
     authorRole: "Product Specialists",
+    image: gloveSizing,
     tags: ["Sizing", "Ergonomics", "Healthcare Workers", "Buying Guide"],
     content: [
       { body: "Glove fit is a safety issue, not just a comfort one. A glove that's too tight restricts circulation and increases fatigue during long procedures. One that's too loose bunches up, reducing dexterity and increasing puncture risk. Yet many facilities order a single size for entire departments." },
@@ -94,6 +107,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 1, 2025",
     author: "Quensol Medical Team",
     authorRole: "Product Specialists",
+    image: infectionControl,
     tags: ["Infection Control", "HAI", "Hospital Safety", "Technical"],
     content: [
       { body: "Healthcare-associated infections (HAIs) affect approximately 7% of patients in developed countries and up to 15% in low-to-middle-income settings. Gloves are a first-line defence — but only when selected and used correctly. Incorrect glove use is one of the most common breaches in standard precautions." },
@@ -113,6 +127,7 @@ export const blogPosts: BlogPost[] = [
     date: "May 10, 2025",
     author: "Quensol Medical Team",
     authorRole: "Product Specialists",
+    image: supplyShortage,
     tags: ["Supply Chain", "Nitrile", "Procurement", "Risk Management"],
     content: [
       { body: "Between 2020 and 2023, global nitrile glove prices rose by over 400% due to COVID-19 demand and supply chain disruptions. While prices have since normalised, structural supply risks remain. Hospitals and procurement managers who learned from this experience have fundamentally changed how they manage glove inventory." },
@@ -131,6 +146,7 @@ export const blogPosts: BlogPost[] = [
     date: "June 10, 2025",
     author: "Quensol Medical Team",
     authorRole: "Product Specialists",
+    image: standingOrders,
     tags: ["Standing Orders", "Cost Reduction", "Procurement", "Hospital Management"],
     content: [
       { body: "Most hospital procurement teams spend 30–40% of their time managing recurring consumable purchases — chasing quotes, processing POs, expediting deliveries. A standing order programme eliminates this overhead while consistently delivering lower unit costs. Here's the full case for making the switch." },
