@@ -1,4 +1,5 @@
 import { Shield, Zap, Truck, Leaf } from "lucide-react";
+import { FadeIn } from "@/components/ui/FadeIn";
 
 const features = [
   {
@@ -29,13 +30,15 @@ export function Features() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
-            <div key={index} className="flex flex-col items-start p-6 rounded-2xl bg-muted/30 hover:bg-muted/60 transition-colors">
-              <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center mb-4">
-                <feature.icon className="w-6 h-6" />
+            <FadeIn key={index} delay={index * 0.09} direction="up">
+              <div className="flex flex-col items-start p-6 rounded-2xl bg-muted/30 hover:bg-muted/60 transition-colors h-full">
+                <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center mb-4">
+                  <feature.icon className="w-6 h-6" />
+                </div>
+                <h3 className="font-heading font-bold text-lg mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
               </div>
-              <h3 className="font-heading font-bold text-lg mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
-            </div>
+            </FadeIn>
           ))}
         </div>
       </div>
